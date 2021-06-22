@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(
         AlgorithmExercise
 #        main.cpp
-#        test/1.c
-        test/2.c
+        test/1.c
+#        test/2.c
 )
