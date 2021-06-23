@@ -20,7 +20,7 @@ add_executable(
         main.cpp
         myLib/structure.h
         myLib/list.h
-)
+        test/2.2.3-ArrayList.cpp)
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)

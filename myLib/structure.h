@@ -11,10 +11,17 @@
 
 template<typename E>
 std::ostream &operator<<(std::ostream &out, SeqList<E> &L) {
-    std::string s;
-    for (int i = 0; i < L.length; i++) {
-        out << "a" << i + 1 << " : " << L.data[i] << std::endl;
+    out << "Array List:" << std::endl;
+    out << "Index" << "\t";
+    for (int i = 0; i < L.length; ++i) {
+        out << i + 1 << "\t";
     }
+    out << std::endl;
+    out << "Value" << "\t";
+    for (int i = 0; i < L.length; ++i) {
+        out << L.data[i] << "\t";
+    }
+    out << std::endl;
     return out;
 }
 
