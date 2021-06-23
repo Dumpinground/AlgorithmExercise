@@ -22,7 +22,7 @@ TEST(testCase, test1) {
     ListInsert(l1, 1, 2);
     ListInsert(l1, 1, 3);
     cout << l1 << endl;
-    cout << LocateElem(l1, 2); << endl;
+    cout << LocateElem(l1, 2) << endl;
     int e;
     ListDelete(l1, 1, e);
     cout << l1 << endl;
