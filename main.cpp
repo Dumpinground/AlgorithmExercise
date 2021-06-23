@@ -31,6 +31,5 @@ TEST(testCase, test1) {
 }
 
 TEST(testCase, test2) {
-    SeqList<int> l1;
 
 }
