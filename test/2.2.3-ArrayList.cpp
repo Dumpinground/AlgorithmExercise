@@ -70,3 +70,30 @@ TEST(ArrayList, 4) {
     cout << list << endl;
 }
 
+template<typename E>
+bool del_s_t2(SeqList<E> &L, E s, E t) {
+
+    if (s >= t || L.length == 0)
+        return false;
+
+    for (int i = 0; i < L.length; ++i) {
+
+    }
+
+    return true;
+}
+
+TEST(ArrayList, 5) {
+    std::mt19937 rng;
+    rng.seed(random_device()());
+    uniform_int_distribution dist(1, 5);
+
+    SeqList<int> list;
+    for (int i = 0; i < 20; ++i) {
+        ListInsert(list, i + 1, dist(rng));
+    }
+    cout << list << endl;
+
+    cout << list << endl;
+}
+
