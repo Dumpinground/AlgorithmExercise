@@ -19,8 +19,13 @@ add_executable(
         AlgorithmExercise
         main.cpp
         myLib/structure.h
+        myLib/ArrayList.h
+        test/2.2.3-ArrayList.cpp
         myLib/list.h
-        test/2.2.3-ArrayList.cpp)
+        test/2.3.4-LinkedList.cpp
+        myLib/LinkedList.h
+#        myLib/LinkedList.hpp
+)
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)
