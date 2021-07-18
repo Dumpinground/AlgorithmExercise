@@ -22,13 +22,13 @@ std::ostream &operator<<(std::ostream &out, LinkedList L) {
         out << " -> " << p->data;
         p = p->next;
     }
-    out << std::endl;
+    out << " -> NULL" << std::endl;
 
     return out;
 }
 
 std::ostream &operator<<(std::ostream &out, LNode &node) {
-    out << "Node: " << node.data << std::endl;
+    out << "LNode: " << node.data << std::endl;
     return out;
 }
 
@@ -43,7 +43,6 @@ bool InitList(LinkedList &L) {
 bool empty(LinkedList L) {
     return L == NULL;
 }
-
 
 LinkedList List_HeadInsert(LinkedList &L, std::vector<ElemType> values = {}) {
 

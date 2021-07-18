@@ -25,7 +25,7 @@ add_executable(
         test/2.3.4-LinkedList.cpp
         myLib/LinkedList.h
 #        myLib/LinkedList.hpp
-)
+        myLib/DLinkedList.h)
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)

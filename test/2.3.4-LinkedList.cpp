@@ -4,11 +4,12 @@
 
 #include <gtest/gtest.h>
 #include "../myLib/LinkedList.h"
+#include "../myLib/DLinkedList.h"
 
 using namespace std;
 
 TEST(LinkedList, 0) {
-    cout << "2.3.4 Linked List" << endl;
+    cout << "2.3.7 Linked List" << endl;
 }
 
 LinkedList ListCreat(const vector<ElemType>& data = {1, 2, 3, 4, 5}, bool reverse = false) {
@@ -86,6 +87,27 @@ TEST(LinkedList, testDeleteNode) {
     n = GetElem(list, 4);
     DeleteNode(n);
     cout << list << endl;
+}
+
+TEST(DLinkedList, testDLinkedList) {
+    DLinkedList L;
+    InitDLinkedList(L);
+    cout << empty(L) << endl;
+}
+
+TEST(DLinkedList, testDestroy) {
+    DLinkedList L;
+    InitDLinkedList(L);
+    int e = 0;
+    DNode *p = L;
+    while (e++ < 5) {
+        DNode *n = (DNode *) malloc(sizeof(DNode));
+        n->data = e;
+        InsertNextDNode(p, n);
+        p = n;
+    }
+    cout << L << endl;
+    DestroyList(L);
 }
 
 TEST(LinkedList, 1) {
