@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include "../myLib/LinkedList.h"
 #include "../myLib/DLinkedList.h"
+#include "../myLib/StaticList.h"
 
 using namespace std;
 
@@ -108,6 +109,30 @@ TEST(DLinkedList, testDestroy) {
     }
     cout << L << endl;
     DestroyList(L);
+}
+
+TEST(StaticList, testList) {
+    Node x;
+    printf("sizeX=%d\n", sizeof(x));
+
+    Node a[MaxSize];
+    printf("sizeA=%d\n", sizeof(a));
+
+    SLinkedList b;
+    printf("sizeB=%d\n", sizeof(b));
+}
+
+TEST(StaticList, ListInsert) {
+    SLinkedList L;
+    InitList(L);
+    for (int i = 1; i <= 5; ++i) {
+        ListInsert(L, i, 100 + i);
+    }
+    cout << L << endl;
+    ListInsert(L, 3, 200);
+    cout << L << endl;
+    ListDelete(L, 4);
+    cout << L << endl;
 }
 
 TEST(LinkedList, 1) {
