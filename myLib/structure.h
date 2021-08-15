@@ -5,6 +5,6 @@
 #ifndef ALGORITHMEXERCISE_STRUCTURE_H
 #define ALGORITHMEXERCISE_STRUCTURE_H
 
-#include "list.h"
+#include "list/list.h"
 
 #endif //ALGORITHMEXERCISE_STRUCTURE_H

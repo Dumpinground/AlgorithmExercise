@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <random>
 
-#include "../myLib/ArrayList.h"
+#include "../myLib/list/ArrayList.h"
 
 using namespace std;
 

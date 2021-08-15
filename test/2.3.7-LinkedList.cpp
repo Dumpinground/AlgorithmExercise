@@ -3,9 +3,9 @@
 //
 
 #include <gtest/gtest.h>
-#include "../myLib/LinkedList.h"
-#include "../myLib/DLinkedList.h"
-#include "../myLib/StaticList.h"
+#include "../myLib/list/LinkedList.h"
+#include "../myLib/list/DLinkedList.h"
+#include "../myLib/list/StaticList.h"
 
 using namespace std;
 
@@ -135,6 +135,80 @@ TEST(StaticList, ListInsert) {
     cout << L << endl;
 }
 
+void Del_X_3(LinkedList &L, ElemType x) {
+
+    if (!L)
+        return;
+
+    if (L->data == x) {
+        LNode *p = L;
+        L = L->next;
+        free(p);
+        Del_X_3(L, x);
+    } else {
+        Del_X_3(L->next, x);
+    }
+}
+
 TEST(LinkedList, 1) {
+
+    LinkedList L;
+    InitList(L);
+    List_TailInsert(L,
+        {4, 1, 5, 6, 2, 4, 6, 4, 3, 1, 5, 2});
+    cout << L << endl;
+
+    Del_X_3(L, 4);
+    cout << L << endl;
+}
+
+void Del_X_1(LinkedList &L, ElemType x) {
+    LNode *p = L;
+    while (p->next) {
+        LNode *q = p->next;
+        if (q->data == x) {
+            p->next = q->next;
+            free(q);
+        }
+        p = p->next;
+    }
+}
+
+TEST(LinkedList, 2) {
+
+    LinkedList L;
+    InitList(L);
+    List_TailInsert(L,
+        {4, 1, 5, 6, 2, 4, 6, 4, 3, 1, 5, 2});
+    cout << L << endl;
+
+    Del_X_1(L, 4);
+    cout << L << endl;
+}
+
+void R_Print(LinkedList L) {
+    if (L->next) {
+        R_Print(L->next);
+    }
+    printf("%d", L->data);
+}
+
+void R_Ignore_Head(LinkedList L) {
+    if (L) R_Print(L->next);
+}
+
+TEST(LinkedList, 3) {
+    LinkedList L;
+    InitList(L);
+    vector<int> values;
+    for (int i = 1; i <= 9; ++i) {
+        values.push_back(i);
+    }
+    List_TailInsert(L, values);
+    cout << L << endl;
+    R_Ignore_Head(L);
+}
+
+TEST(LinkedList, 4) {
 
 }
