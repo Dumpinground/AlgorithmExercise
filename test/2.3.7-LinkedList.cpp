@@ -209,6 +209,42 @@ TEST(LinkedList, 3) {
     R_Ignore_Head(L);
 }
 
-TEST(LinkedList, 4) {
+void Delete_Min(LinkedList &L) {
+    if (!L->next)
+        return;
+    LNode *p = L->next, *min_prev = L;
+    while (p->next) {
+        if (min_prev->next->data > p->next->data)
+            min_prev = p;
+        p = p->next;
+    }
+    LNode *q = min_prev->next;
+    min_prev->next = q->next;
+    free(q);
+}
 
+TEST(LinkedList, 4) {
+    LinkedList L;
+    InitList(L);
+    List_TailInsert(L,
+                    {4, 3, 5, 6, 2, 4, 6, 4, 3, 1, 5, 2});
+    cout << L << endl;
+
+    Delete_Min(L);
+    cout << L << endl;
+}
+
+void Reserve(LinkedList &L) {
+
+}
+
+TEST(LinkedList, 5) {
+    LinkedList L;
+    InitList(L);
+    vector<int> values;
+    for (int i = 1; i <= 9; ++i) {
+        values.push_back(i);
+    }
+    List_TailInsert(L, values);
+    cout << L << endl;
 }
