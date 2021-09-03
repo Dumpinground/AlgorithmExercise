@@ -2,10 +2,12 @@
 // Created by hasee on 2021/6/27.
 //
 
-#ifndef ALGORITHMEXERCISE_LINKEDLIST_H
+#ifndef ALGORITHMEXERCISE_LINKEDLIST_HPP
 #define ALGORITHMEXERCISE_LINKEDLIST_H
 
+#ifndef ElemType
 typedef int ElemType;
+#endif
 
 typedef struct LNode {
     ElemType data;
@@ -207,4 +209,4 @@ bool DeleteNode(LNode *p) {
     return true;
 }
 
-#endif //ALGORITHMEXERCISE_LINKEDLIST_H
+#endif //ALGORITHMEXERCISE_LINKEDLIST_HPP

@@ -28,14 +28,14 @@ std::ostream &operator<<(std::ostream &out, LinkedList<E> L) {
     return out;
 }
 
-template<typename E>
-bool InitList(LinkedList<E> &L) {
-    L = new LinkedList<E>;
-    if (L == NULL)
-        return false;
-    L->next = NULL;
-    return true;
-}
+//template<typename E>
+//bool InitList(LinkedList<E> &L) {
+//    L = new LinkedList<E>;
+//    if (L == NULL)
+//        return false;
+//    L->next = NULL;
+//    return true;
+//}
 
 template<typename E>
 bool empty(LinkedList<E> L) {
@@ -63,19 +63,17 @@ LinkedList<E> List_HeadInsert(LinkedList<E> &L) {
 }
 
 template<typename E>
-LinkedList<E> List_TailInsert(LinkedList<E> &L) {
+LinkedList<E> List_TailInsert(LinkedList<E> &L, std::vector<E> values = {}) {
 
-    int x;
 //    L = new LinkedList<E>;
 
     LNode<E> *s, *r = L;
-    std::cin >> x;
-    while (x != 9999) {
+
+    for (auto v : values) {
         s = new LNode<E>;
-        s->data = x;
+        s->data = v;
         r->next = s;
         r = s;
-        std::cin >> x;
     }
     r->next = NULL;
     return L;

@@ -7,7 +7,9 @@
 
 #define MaxSize 10
 
+#ifndef ElemType
 typedef int ElemType;
+#endif
 
 //顺序栈
 struct SqStack {
@@ -24,7 +26,7 @@ struct ShStack {
 //链栈
 typedef struct LinkNode {
     ElemType data;
-    struct LinkNode *next;
+    LinkNode *next;
 } *LiStack;
 
 void InitStack(SqStack &S) {

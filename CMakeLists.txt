@@ -24,8 +24,14 @@ add_executable(
         myLib/list/list.h
         test/2.3.7-LinkedList.cpp
         myLib/list/LinkedList.h
-#        myLib/LinkedList.hpp
-        myLib/list/DLinkedList.h myLib/list/CycleLinkedList.h myLib/list/ListNode.h myLib/list/CycleDLinkedList.h myLib/list/StaticList.h myLib/stack.h test/3.1.4-Stack.cpp)
+#        myLib/list/DLinkedList.h
+#        myLib/list/CycleLinkedList.h
+#        myLib/list/ListNode.h
+#        myLib/list/CycleDLinedList.h
+#        myLib/list/StaticList.h
+        myLib/stack.h
+        test/3.1.4-Stack.cpp
+        )
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)
