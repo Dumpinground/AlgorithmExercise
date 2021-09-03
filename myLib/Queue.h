@@ -24,4 +24,21 @@ bool DeQueue(SqQueue &Q, ElemType &x);
 
 bool GetHead(SqQueue &Q, ElemType &x);
 
+struct LinkNode {
+    ElemType data;
+    LinkNode *next;
+};
+
+struct LinkQueue {
+    LinkNode *front, *rear;
+};
+
+void InitQueue(LinkQueue &Q);
+
+bool IsEmpty(LinkQueue Q);
+
+void EnQueue(LinkQueue &Q, ElemType x, bool head = true);
+
+bool DeQueue(LinkNode &Q, ElemType &x, bool head = true);
+
 #endif //ALGORITHMEXERCISE_QUEUE_H
