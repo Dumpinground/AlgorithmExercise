@@ -37,7 +37,7 @@ bool GetHead(SqQueue &Q, ElemType &x) {
 }
 
 void InitQueue(LinkQueue &Q) {
-    Q.front = Q.rear = (LinkNode*) malloc(sizeof(LinkNode));
+    Q.front = Q.rear = (LNode*) malloc(sizeof(LNode));
     Q.front->next = NULL;
 }
 
@@ -46,7 +46,7 @@ bool IsEmpty(LinkQueue Q) {
 }
 
 void EnQueue(LinkQueue &Q, ElemType x, bool head) {
-    LinkNode *s = (LinkNode*) malloc(sizeof(LinkNode));
+    LNode *s = (LNode*) malloc(sizeof(LNode));
     s->data = x;
     s->next = NULL;
     if (!head && !Q.front) {
@@ -60,7 +60,7 @@ void EnQueue(LinkQueue &Q, ElemType x, bool head) {
 bool DeQueue(LinkQueue &Q, ElemType &x, bool head) {
     if (Q.front == Q.rear)
         return false;
-    LinkNode *p;
+    LNode *p;
     if (head) {
         p = Q.front->next;
         x = p->data;
@@ -76,3 +76,24 @@ bool DeQueue(LinkQueue &Q, ElemType &x, bool head) {
     return true;
 }
 
+std::ostream &operator<<(std::ostream &out, SqQueue &Q) {
+    int p = Q.front;
+    out << "Sq Queue\n";
+    while (p != Q.rear) {
+        out << " " << Q.data[p];
+        p = (p + 1) % MaxSize;
+    }
+    out << std::endl;
+    return out;
+}
+
+//std::ostream &operator<<(std::ostream &out, LinkQueue &Q) {
+//    LNode *p = Q.front;
+//    out << "Link Queue\n" << "Head";
+//    while (p->next) {
+//        p = p->next;
+//        out << " -> " << p->data;
+//    }
+//    out << std::endl;
+//    return out;
+//}

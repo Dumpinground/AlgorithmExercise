@@ -18,20 +18,16 @@ enable_testing()
 add_executable(
         AlgorithmExercise
         main.cpp
-#        myLib/structure.h
         myLib/list/ArrayList.h
-#        test/2.2.3-ArrayList.cpp
-#        myLib/list/list.h
-#        test/2.3.7-LinkedList.cpp
         myLib/list/LinkedList.h
-#        myLib/list/DLinkedList.h
-#        myLib/list/CycleLinkedList.h
-#        myLib/list/ListNode.h
-#        myLib/list/CycleDLinedList.h
-#        myLib/list/StaticList.h
-        myLib/stack.h
+        myLib/stack/stack.h
         test/3.1.4-Stack.cpp
-        myLib/list/LinkedList.cpp myLib/stack.cpp myLib/Queue.h myLib/Queue.cpp test/3.2.5-Queue.cpp)
+        myLib/list/LinkedList.cpp
+        myLib/stack/stack.cpp
+        myLib/queue/Queue.h
+        myLib/queue/Queue.cpp
+        test/3.2.5-Queue.cpp
+        test/3.3.6.cpp myLib/TypeElement.h myLib/TypeElement.cpp)
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)

@@ -5,12 +5,9 @@
 #ifndef ALGORITHMEXERCISE_DLINKEDLIST_H
 #define ALGORITHMEXERCISE_DLINKEDLIST_H
 
-typedef int ElemType;
+#include "../TypeElement.h"
 
-typedef struct DNode{
-    ElemType data;
-    struct DNode *prior, *next;
-} *DLinkedList;
+typedef DNode *DLinkedList;
 
 bool InitDLinkedList(DLinkedList &L) {
     L = (DNode *) malloc(sizeof(DNode));
@@ -21,20 +18,21 @@ bool InitDLinkedList(DLinkedList &L) {
     return true;
 }
 
-std::ostream &operator<<(std::ostream &out, DLinkedList L) {
-
-    DNode *p;
-    p = L->next;
-    out << "DLinked List:" << std::endl;
-    out << "Head";
-    while (p) {
-        out << " <-> " << p->data;
-        p = p->next;
-    }
-    out << " <-> NULL" << std::endl;
-
-    return out;
-}
+std::ostream &operator<<(std::ostream &out, DLinkedList L);
+//{
+//
+//    DNode *p;
+//    p = L->next;
+//    out << "DLinked List:" << std::endl;
+//    out << "Head";
+//    while (p) {
+//        out << " <-> " << p->data;
+//        p = p->next;
+//    }
+//    out << " <-> NULL" << std::endl;
+//
+//    return out;
+//}
 
 std::ostream &operator<<(std::ostream &out, DNode &node) {
     out << "DNode: " << node.data << std::endl;

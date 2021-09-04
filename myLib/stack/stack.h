@@ -5,11 +5,7 @@
 #ifndef ALGORITHMEXERCISE_STACK_H
 #define ALGORITHMEXERCISE_STACK_H
 
-#define MaxSize 10
-
-#ifndef ElemType
-typedef int ElemType;
-#endif
+#include "../TypeElement.h"
 
 #include <ostream>
 
@@ -26,37 +22,30 @@ struct ShStack {
 };
 
 //链栈
-typedef struct LinkNode {
-    ElemType data;
-    LinkNode *next;
-} *LiStack;
+typedef LNode *LiStack;
 
 void InitStack(SqStack &S);
-
 void InitStack(ShStack &S);
-
 void InitStack(LiStack &S);
 
 bool StackEmpty(SqStack S);
-
 bool StackEmpty(LiStack S);
+
+bool StackOverflow(SqStack S);
+bool StackOverflow(ShStack S);
 
 void DestroyStack(SqStack &S);
 
 bool Push(SqStack &S, ElemType x);
-
 bool Push(LiStack &S, ElemType x);
 
 bool Pop(SqStack &S, ElemType &x);
-
 bool Pop(LiStack &S, ElemType &x);
 
 bool GetTop(SqStack S, ElemType &x);
-
 bool GetTop(LiStack S, ElemType &x);
 
 std::ostream &operator<<(std::ostream &out, SqStack S);
-
 std::ostream &operator<<(std::ostream &out, LiStack S);
 
 #endif //ALGORITHMEXERCISE_STACK_H

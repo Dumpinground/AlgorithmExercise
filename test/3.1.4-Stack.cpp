@@ -4,9 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#define ElemType int
-
-#include "../myLib/stack.h"
+#include "../myLib/stack/stack.h"
 //#include "../myLib/list/LinkedList.h"
 
 using namespace std;
@@ -100,10 +98,6 @@ TEST(Stack, 4) {
     InitList(L);
 //    List_TailInsert(L, {"xx", "sys", "wertty", "yuuif0", "54fgLgf45"});
     List_TailInsert(L, {121, 223, 421, 56965, 344443, 10312});
-//    cout << L << endl;
-    isCentrosymmetric(L->next);
-}
-
-TEST(Stack, 5) {
-
+    cout << L << endl;
+//    isCentrosymmetric(L->next);
 }

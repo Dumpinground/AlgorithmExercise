@@ -5,9 +5,9 @@
 #ifndef ALGORITHMEXERCISE_QUEUE_H
 #define ALGORITHMEXERCISE_QUEUE_H
 
-typedef int ElemType;
+#include <ostream>
 
-#define MaxSize 50
+#include "../TypeElement.h"
 
 struct SqQueue {
     ElemType data[MaxSize];
@@ -24,13 +24,8 @@ bool DeQueue(SqQueue &Q, ElemType &x);
 
 bool GetHead(SqQueue &Q, ElemType &x);
 
-struct LinkNode {
-    ElemType data;
-    LinkNode *next;
-};
-
 struct LinkQueue {
-    LinkNode *front, *rear;
+    LNode *front, *rear;
 };
 
 void InitQueue(LinkQueue &Q);
@@ -39,6 +34,10 @@ bool IsEmpty(LinkQueue Q);
 
 void EnQueue(LinkQueue &Q, ElemType x, bool head = true);
 
-bool DeQueue(LinkNode &Q, ElemType &x, bool head = true);
+bool DeQueue(LinkQueue &Q, ElemType &x, bool head = true);
+
+std::ostream &operator<<(std::ostream &out, SqQueue &Q);
+
+std::ostream &operator<<(std::ostream &out, LinkQueue &Q);
 
 #endif //ALGORITHMEXERCISE_QUEUE_H

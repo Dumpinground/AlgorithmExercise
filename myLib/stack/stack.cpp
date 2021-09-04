@@ -14,7 +14,7 @@ void InitStack(ShStack &S) {
 }
 
 void InitStack(LiStack &S) {
-    S = (LinkNode *) malloc(sizeof(LinkNode));
+    S = (LNode *) malloc(sizeof(LNode));
     S->next = NULL;
 }
 
@@ -24,6 +24,14 @@ bool StackEmpty(SqStack S) {
 
 bool StackEmpty(LiStack S) {
     return S->next == NULL;
+}
+
+bool StackOverflow(SqStack S) {
+    return S.top + 1 == MaxSize;
+}
+
+bool StackOverflow(ShStack S) {
+    return S.top1 - S.top0 == 1;
 }
 
 void DestroyStack(SqStack &S);
@@ -40,7 +48,7 @@ bool Push(SqStack &S, ElemType x) {
 }
 
 bool Push(LiStack &S, ElemType x) {
-    LinkNode *n = (LinkNode *) malloc(sizeof(LinkNode));
+    LNode *n = (LNode *) malloc(sizeof(LNode));
     if (!n)
         return false;
     n->data = x;
@@ -62,7 +70,7 @@ bool Pop(LiStack &S, ElemType &x) {
     if (StackEmpty(S))
         return false;
 
-    LinkNode *n = S->next;
+    LNode *n = S->next;
     x = n->data;
     S->next = n->next;
     free(n);
@@ -95,12 +103,12 @@ std::ostream &operator<<(std::ostream &out, SqStack S) {
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, LiStack S) {
-    LinkNode *n = S;
-    out << "LiStack:" << std::endl;
-    while (n->next) {
-        n = n->next;
-        out << n->data << std::endl;
-    }
-    return out;
-}
+//std::ostream &operator<<(std::ostream &out, LiStack S) {
+//    LNode *n = S;
+//    out << "LiStack:" << std::endl;
+//    while (n->next) {
+//        n = n->next;
+//        out << n->data << std::endl;
+//    }
+//    return out;
+//}

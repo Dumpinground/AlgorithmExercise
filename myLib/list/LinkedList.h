@@ -8,18 +8,13 @@
 #include <iostream>
 #include <vector>
 
-#ifndef ElemType
-typedef int ElemType;
-#endif
+#include "../TypeElement.h"
 
-typedef struct LNode {
-    ElemType data;
-    LNode *next;
-} *LinkedList;
+typedef LNode *LinkedList;
 
 std::ostream &operator<<(std::ostream &out, LinkedList L);
-
-std::ostream &operator<<(std::ostream &out, LNode &node);
+//
+//std::ostream &operator<<(std::ostream &out, LNode &node);
 
 bool InitList(LinkedList &L);
 

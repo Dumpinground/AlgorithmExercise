@@ -4,25 +4,25 @@
 
 #include "LinkedList.h"
 
-std::ostream &operator<<(std::ostream &out, LinkedList L) {
-
-    LNode *p;
-    p = L->next;
-    out << "Linked List:" << std::endl;
-    out << "Head";
-    while (p) {
-        out << " -> " << p->data;
-        p = p->next;
-    }
-    out << " -> NULL" << std::endl;
-
-    return out;
-}
-
-std::ostream &operator<<(std::ostream &out, LNode &node) {
-    out << "LNode: " << node.data << std::endl;
-    return out;
-}
+//std::ostream &operator<<(std::ostream &out, LinkedList L) {
+//
+//    LNode *p;
+//    p = L->next;
+//    out << "Linked List:" << std::endl;
+//    out << "Head";
+//    while (p) {
+//        out << " -> " << p->data;
+//        p = p->next;
+//    }
+//    out << " -> NULL" << std::endl;
+//
+//    return out;
+//}
+//
+//std::ostream &operator<<(std::ostream &out, LNode &node) {
+//    out << "LNode: " << node.data << std::endl;
+//    return out;
+//}
 
 bool InitList(LinkedList &L) {
     L = (LinkedList)malloc(sizeof(LinkedList));
