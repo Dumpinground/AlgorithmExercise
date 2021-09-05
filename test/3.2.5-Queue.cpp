@@ -85,6 +85,14 @@ struct MyQueue {
     }
 };
 
+TEST(Queue, 3) {
+    MyQueue Q;
+    for (int i = 0; i < 10; ++i) {
+        Q.Enqueue(i);
+    }
+    cout << Q << endl;
+}
+
 struct MyQueue2 {
     LNode *front, *rear;
     MyQueue2() {
@@ -120,16 +128,6 @@ struct MyQueue2 {
         front = front->next;
     }
 };
-
-TEST(Queue, 3) {
-    MyQueue Q;
-    for (int i = 0; i < 10; ++i) {
-        Q.Enqueue(i);
-    }
-    cout << Q << endl;
-}
-
-
 
 TEST(Queue, 4) {
 
