@@ -162,7 +162,56 @@ ElemType popUntil(SqStack &S, ElemType e) {
     return x;
 }
 
-int infixResultWithBracket(char infix[]) {
+//TODO need fix
+int infixResult(char infix[]) {
+    int r = 0;
+    bool temp = false;
+    SqStack S, Sop;
+    InitStack(S);
+    InitStack(Sop);
+    string postfix;
+    for (int i = 0; i < strlen(infix); i++) {
+        char c = infix[i];
+        if (isNumber(c)) {
+            r = numberAttach(r, c - '0');
+            temp = true;
+        } else {
+            if (temp) {
+                Push(S, r);
+                temp = false;
+            }
+            if (c == '+' || c == '-' || c == '*' || c == '/') {
+                int op, a, b;
+                if (Pop(Sop, op)) {
+                    if (c == '*' || c == '/') {
+                        Pop(S, b);
+                        Pop(S, a);
+                        if (op == '+' || op == '-') {
+                            Push(Sop, op);
+                        } else {
+                            r = postfixCompute(a, b, op);
+                            Push(S, r);
+                        }
+                        Push(Sop, c);
+                    } else {
+                        Pop(S, b);
+                        Pop(S, a);
+                        r = postfixCompute(a, b, op);
+                        Push(Sop, c);
+                        Push(S, r);
+                    }
+                } else {
+                    Push(Sop, c);
+                }
+            }
+            r = 0;
+        }
+    }
+    return GetTop(S);
+}
+
+string infixResultWithBracket(char infix[]) {
+    string postfix = "";
     int x;
     SqStack S, Sop;
     InitStack(S);
@@ -196,7 +245,7 @@ int infixResultWithBracket(char infix[]) {
                 Push(S, c);
         }
     }
-    return S.data[S.top];
+    return postfix;
 }
 
 void intPrint(char c[]) {
@@ -207,14 +256,18 @@ void intPrint(char c[]) {
 }
 
 TEST(Stack, testExpression2) {
-    char infix[] = "((15/(7-(1+1)))*3)-(2+(1+1))";
-    cout << int(' ') << endl;
-    char op[] = "+-*/";
-    char numbers[] = "0123456789";
-    char bracket[] = "()[]{}";
-    intPrint(op);
-    intPrint(numbers);
-    intPrint(bracket);
-    cout << char(92) << " " << 92 << "  " << char(124) << " " << 124 << endl;
-    cout << '\0' << "\\0" << endl;
+    char infix[] = "((15/(7-(1+1 )))*3)-(2+(1+1))";
+//    cout << int(' ') << endl;
+//    char op[] = "+-*/";
+//    char numbers[] = "0123456789";
+//    char bracket[] = "()[]{}";
+//    intPrint(op);
+//    intPrint(numbers);
+//    intPrint(bracket);
+//    cout << char(92) << " " << 92 << "  " << char(124) << " " << 124 << endl;
+//    cout << '\0' << "\\0" << endl;
+
+    char a[] = "2 + 4 * 12 - 6 / 2";
+    cout << infixResult(a) << endl;
+    cout << 29 << endl;
 }

@@ -84,6 +84,10 @@ bool GetTop(SqStack S, ElemType &x) {
     return true;
 }
 
+ElemType GetTop(SqStack S) {
+    return S.data[S.top];
+}
+
 bool GetTop(LiStack S, ElemType &x) {
 
     if (StackEmpty(S))

@@ -43,6 +43,7 @@ bool Pop(SqStack &S, ElemType &x);
 bool Pop(LiStack &S, ElemType &x);
 
 bool GetTop(SqStack S, ElemType &x);
+ElemType GetTop(SqStack S);
 bool GetTop(LiStack S, ElemType &x);
 
 std::ostream &operator<<(std::ostream &out, SqStack S);
