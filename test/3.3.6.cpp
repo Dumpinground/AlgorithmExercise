@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 
-//#include "../myLib/stack/char ver/stack.h"
 #include "../myLib/stack/stack.h"
 #include "../myLib/queue/Queue.h"
 
@@ -270,4 +269,138 @@ TEST(Stack, testExpression2) {
     char a[] = "2 + 4 * 12 - 6 / 2";
     cout << infixResult(a) << endl;
     cout << 29 << endl;
+}
+
+int factorial(int n) {
+    if (n == 0 || n == 1)
+        return 1;
+    return n * factorial(n - 1);
+}
+
+int Fib(int n) {
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return Fib(n - 1) + Fib(n - 2);
+}
+
+TEST(Stack, testFactorial) {
+    cout << factorial(10) << endl;
+}
+
+bool bracketMatch(char expression[]) {
+    int i = 0, pop;
+    SqStack S;
+    InitStack(S);
+    while (expression[i] != '\0') {
+        char c = expression[i];
+        switch (c) {
+            case '(':
+            case '[':
+            case '{':
+                Push(S, c);
+                break;
+            case ')':
+                Pop(S, pop);
+                if (pop != '(')
+                    return false;
+                break;
+            case ']':
+                Pop(S, pop);
+                if (pop != '[')
+                    return false;
+                break;
+            case '}':
+                Pop(S, pop);
+                if (pop != '{')
+                    return false;
+        }
+        i++;
+    }
+    return StackEmpty(S);
+}
+
+TEST(StackApp, 1) {
+    char expression[] = "1+(2-3)-[3/(2+4)]+{34-22/54+[32-56+(23+11)]}\0";
+    cout << bracketMatch(expression) << endl;
+}
+
+char* carSchedule(char cars[]) {
+    SqStack S;
+    InitStack(S);
+    int n = strlen(cars), s = 0;
+    char c;
+    for (int i = 0; i < n; ++i) {
+        c = cars[i];
+        if (c == 'H')
+            Push(S, c);
+        else {
+            cars[s++] = c;
+        }
+    }
+    while (!StackEmpty(S)) {
+        ElemType e;
+        int top = S.top;
+        Pop(S, e);
+        cars[n - 1 - top] = e;
+    }
+    return cars;
+}
+
+TEST(StackApp, 2) {
+    char cars[] = "HSHHSSHSHSHHSHHHHHSSHSS";
+    cout << carSchedule(cars) << endl;
+}
+
+struct PStack {
+    int _n[30];
+    int _val[30];
+    int top;
+
+    PStack() {
+        top = -1;
+    }
+
+    bool push(int n, int val) {
+        if (top + 1 == 30)
+            return false;
+        top++;
+        _n[top] = n;
+        _val[top] = val;
+        return true;
+    }
+
+    bool pop(int &n, int &val) {
+        if (top == -1)
+            return false;
+        top--;
+        n = _n[top];
+        val = _val[top];
+        return true;
+    }
+
+    bool empty() const {
+        return top == -1;
+    }
+};
+
+int P(int n, int x) {
+    PStack S;
+    int fv0 = 1, fv1 = 2 * x;
+    while (n > 1) {
+        S.push(--n, x);
+        S.push(--n, x);
+    }
+    for (int i = n; i > 1; i--) {
+
+    }
+    while (!S.empty()) {
+
+    }
+    return n ? fv1 : fv0;
+}
+
+TEST(StackApp, 3) {
+    printf("%d %d %d %d %d\n", P(0, 1), P(1, 1), P(2, 1), P(3, 1), P(4, 1), P(5, 1));
 }
