@@ -4,49 +4,37 @@
 
 #include <iostream>
 #include <queue>
+#include <map>
+#include <functional>
 #include "binaryTree.h"
 
 using namespace std;
 
-std::ostream &operator<<(std::ostream &out, ElemType e) {
-    out << e.value;
-    return out;
-}
-
 std::ostream &operator<<(std::ostream &out, BiTNode *n) {
-    out << "{ " << n->data << " }";
-//    if (n->lchild)
-//        out << "\n left: " << n->lchild;
-//    if (n->rchild)
-//        out << "\n right: " << n->rchild;
+    out << n->data;
     return out;
 }
 
-BiTNode::BiTNode(ElemType e) {
-    data = e;
-    lchild = NULL;
-    rchild = NULL;
+BiTNode::BiTNode(ElemType e)
+: data(e), lchild(NULL), rchild(NULL) {}
+
+BiTNode::BiTNode(BiTNode *T) {
+    *this = *T;
 }
 
-//BiTNode::BiTNode(const std::vector<ElemType>& es) {
-//    queue<BiTNode *> q;
-//    for (auto &e : es) {
-//        if (q.empty()) {
-//            data = e;
-//            q.push(this);
-//        } else {
-//            BiTNode *p = q.front();
-//            if (!p->lchild) {
-//                p->lchild->data = e;
-//                q.push(p->lchild);
-//            } else {
-//                p->rchild->data = e;
-//                q.push(p->rchild);
-//                q.pop();
-//            }
-//        }
-//    }
-//}
+void BiTNode::printTree() {
+    map<BiTNode *, int> treeMap;
+    int n = 0;
+    order(this, In, [&](BiTree T) {
+        treeMap[T] = n++;
+    });
+    levelOrder(this, [&](BiTree T) {
+        for (int i = 0; i < treeMap[T]; ++i) {
+            cout << "\t";
+        }
+        cout << T << endl;
+    });
+}
 
 void CompleteBuild(BiTree T, const std::vector<ElemType>& es) {
     queue<BiTNode *> q;
@@ -63,17 +51,13 @@ void CompleteBuild(BiTree T, const std::vector<ElemType>& es) {
     }
 }
 
-void visit(BiTNode* n) {
-    cout << n << " ";
-}
-
-void order(BiTree T, OrderType type) {
+void order(BiTree T, OrderType type, const function<void(BiTree)>& visit) {
 
     if (T) {
         if (type == Pre) visit(T);
-        order(T->lchild, type);
+        order(T->lchild, type, visit);
         if (type == In) visit(T);
-        order(T->rchild, type);
+        order(T->rchild, type, visit);
         if (type == Post) visit(T);
     }
 }
@@ -105,14 +89,14 @@ void PostOrder(BiTree T) {
     }
 }
 
-void levelOrder(BiTree T) {
+void levelOrder(BiTree T, const function<void(BiTree)>& visit) {
     queue<BiTNode *> Q;
     BiTNode *p;
     Q.push(T);
     while (!Q.empty()) {
         p = Q.front();
         Q.pop();
-        cout << p << " ";
+        visit(p);
         if (p->lchild)
             Q.push(p->lchild);
         if (p->rchild)

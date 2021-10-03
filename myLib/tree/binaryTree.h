@@ -10,45 +10,26 @@
 #include <ostream>
 #include <vector>
 
-struct ElemType {
-
-    int value;
-
-    friend std::ostream &operator<<(std::ostream &out, ElemType);
-};
-
-//struct TreeNode {
-//    ElemType value;
-//    bool isEmpty;
-//};
-
-enum OrderType {
-    Pre = 1,
-    In = 2,
-    Post = 3
-};
+#include "TreeElement.h"
 
 struct BiTNode {
     ElemType data;
     BiTNode *lchild, *rchild;
 
-//    enum OrderType {
-//        PreOrder = 1,
-//        InOrder = 2,
-//        PostOrder = 3
-//    };
-
     BiTNode(ElemType e);
-//    BiTNode(const std::vector<ElemType>& es);
+    BiTNode(BiTNode* T);
 
-    friend std::ostream &operator<<(std::ostream &out, BiTNode*);
+    friend std::ostream &operator<<(std::ostream &out, BiTNode *);
+
+    void printTree();
 };
 
 typedef BiTNode *BiTree;
 
-void CompleteBuild(BiTree T, const std::vector<ElemType>& es);
+void CompleteBuild(BiTree T, const std::vector<ElemType> &es);
 
-void order(BiTree T, OrderType type);
+void order(BiTree T, OrderType type, const std::function<void(BiTree)>&
+visit = [](BiTree T) { std::cout << T << " "; });
 
 void PreOrder(BiTree T);
 
@@ -56,6 +37,7 @@ void InOrder(BiTree T);
 
 void PostOrder(BiTree T);
 
-void levelOrder(BiTree T);
+void levelOrder(BiTree T, const std::function<void(BiTree)>&
+visit = [](BiTree T) { std::cout << T << " "; });
 
 #endif //ALGORITHMEXERCISE_BINARYTREE_H

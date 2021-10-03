@@ -27,7 +27,18 @@ add_executable(
         myLib/queue/Queue.h
         myLib/queue/Queue.cpp
         test/3.2.5-Queue.cpp
-        test/3.3.6.cpp myLib/TypeElement.h myLib/TypeElement.cpp test/4.cpp myLib/tree/binaryTree.h test/5.2.3-BinaryTree.cpp myLib/tree/binaryTree.cpp)
+        test/3.3.6.cpp
+        myLib/TypeElement.h
+        myLib/TypeElement.cpp
+        test/4.cpp
+        myLib/tree/binaryTree.h
+        test/5.2.3-BinaryTree.cpp
+        myLib/tree/binaryTree.cpp
+        myLib/tree/ThreadTree.h
+        myLib/tree/ThreadTree.cpp
+        myLib/tree/TreeElement.h
+        myLib/tree/TreeElement.cpp
+)
 
 include(GoogleTest)
 target_link_libraries(AlgorithmExercise gtest_main)
