@@ -74,11 +74,14 @@ TEST(bt, thread) {
     };
 
     threadBuild(root, In);
-    root->printTree();
+    order(root, In);
+    threadOrder(root, In);
+    threadOrder(root, In, true);
     levelOrder(root, unlink);
-    threadBuild(root, Pre);
-    root->printTree();
-    levelOrder(root, unlink);
-    threadBuild(root, Post);
-    root->printTree();
+
+//    threadBuild(root, Pre);
+//    root->printTree();
+//    levelOrder(root, unlink);
+//    threadBuild(root, Post);
+//    root->printTree();
 }

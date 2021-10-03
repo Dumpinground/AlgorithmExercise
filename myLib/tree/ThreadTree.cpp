@@ -12,7 +12,7 @@
 using namespace std;
 
 ThreadNode::ThreadNode(ElemType e)
-: data(e), lchild(NULL), rchild(NULL), ltag(NULL), rtag(NULL) {}
+        : data(e), lchild(NULL), rchild(NULL), ltag(NULL), rtag(NULL) {}
 
 void ThreadNode::printTree() {
     map<ThreadNode *, int> treeMap;
@@ -42,7 +42,7 @@ std::ostream &operator<<(std::ostream &out, ThreadNode *n) {
     return out;
 }
 
-void CompleteBuild(ThreadTree T, const std::vector<ElemType>& es) {
+void CompleteBuild(ThreadTree T, const std::vector<ElemType> &es) {
     queue<ThreadTree> q;
     q.push(T);
     for (auto &e : es) {
@@ -60,19 +60,19 @@ void CompleteBuild(ThreadTree T, const std::vector<ElemType>& es) {
 void threadBuild(ThreadTree T, OrderType type) {
     ThreadNode *pre = NULL;
     order(T, type, [&](ThreadTree q) {
-        if (!q->lchild) {
+        if (!q->lchild && pre) {
             q->lchild = pre;
             q->ltag = true;
         }
         if (pre && !pre->rchild) {
             pre->rchild = q;
-            pre ->rtag = true;
+            pre->rtag = true;
         }
         pre = q;
     });
 }
 
-void order(ThreadTree T, OrderType type, const function<void(ThreadTree)>& visit) {
+void order(ThreadTree T, OrderType type, const function<void(ThreadTree)> &visit) {
 
     if (T) {
         if (type == Pre) visit(T);
@@ -83,7 +83,7 @@ void order(ThreadTree T, OrderType type, const function<void(ThreadTree)>& visit
     }
 }
 
-void levelOrder(ThreadTree T, const function<void(ThreadTree)>& visit) {
+void levelOrder(ThreadTree T, const function<void(ThreadTree)> &visit) {
     queue<ThreadNode *> Q;
     ThreadNode *p;
     Q.push(T);
@@ -97,4 +97,73 @@ void levelOrder(ThreadTree T, const function<void(ThreadTree)>& visit) {
             Q.push(p->rchild);
     }
     cout << endl;
+}
+
+ThreadNode* FirstNode(ThreadNode *p) {
+    while (!p->ltag && p->lchild)
+        p = p->lchild;
+    return p;
+}
+ThreadNode* NextNode(ThreadNode *p) {
+    if (p->rtag)
+        return p->rchild;
+    else
+        return FirstNode(p->rchild);
+}
+ThreadNode* LastNode(ThreadNode *p) {
+    while (!p->rtag && p->rchild)
+        p = p->rchild;
+    return p;
+}
+ThreadNode* PreNode(ThreadNode *p) {
+    if (p->rtag)
+        return p->rchild;
+    else
+        return LastNode(p->rchild);
+}
+
+void threadOrder(ThreadTree T, OrderType type, bool reverse, function<void(ThreadTree T)> visit) {
+
+//    function<ThreadNode *(ThreadNode *)> FirstNode, NextNode, LastNode, PreNode;
+//
+//    FirstNode = [] (ThreadNode *p)->ThreadNode* {
+//        while (!p->ltag && p->lchild)
+//            p = p->lchild;
+//        return p;
+//    };
+//    NextNode = [&FirstNode] (ThreadNode *p)->ThreadNode* {
+//        if (p->rtag)
+//            return p->rchild;
+//        else
+//            return FirstNode(p->rchild);
+//    };
+//    LastNode = [] (ThreadNode *p)->ThreadNode* {
+//        while (!p->rtag && p->rchild)
+//            p = p->rchild;
+//        return p;
+//    };
+//    PreNode = [&LastNode] (ThreadNode *p)->ThreadNode* {
+//        if (p->rtag)
+//            return p->rchild;
+//        else
+//            return LastNode(p->rchild);
+//    };
+
+    switch (type) {
+        case In:
+            break;
+        case Pre:
+            break;
+        case Post:
+            break;
+    }
+
+    if (reverse)
+        for (auto p = LastNode(T); p; p = PreNode(p)) {
+            visit(p);
+        }
+    else
+        for (auto p = FirstNode(T); p; p = NextNode(p)) {
+            visit(p);
+        }
 }
