@@ -70,6 +70,7 @@ void threadBuild(ThreadTree T, OrderType type) {
         }
         pre = q;
     });
+    pre->rtag = true;
 }
 
 void order(ThreadTree T, OrderType type, const function<void(ThreadTree)> &visit) {
@@ -98,58 +99,57 @@ void levelOrder(ThreadTree T, const function<void(ThreadTree)> &visit) {
     cout << endl;
 }
 
-ThreadNode* FirstNode(ThreadNode *p) {
-    while (!p->ltag && p->lchild)
-        p = p->lchild;
-    return p;
-}
-ThreadNode* NextNode(ThreadNode *p) {
-    if (p->rtag)
-        return p->rchild;
-    else
-        return FirstNode(p->rchild);
-}
-ThreadNode* LastNode(ThreadNode *p) {
-    while (!p->rtag && p->rchild)
-        p = p->rchild;
-    return p;
-}
-ThreadNode* PreNode(ThreadNode *p) {
-    if (p->rtag)
-        return p->rchild;
-    else
-        return LastNode(p->rchild);
-}
+//ThreadNode* FirstNode(ThreadNode *p) {
+//    while (!p->ltag && p->lchild)
+//        p = p->lchild;
+//    return p;
+//}
+//ThreadNode* NextNode(ThreadNode *p) {
+//    if (p->rtag)
+//        return p->rchild;
+//    else
+//        return FirstNode(p->rchild);
+//}
+//ThreadNode* LastNode(ThreadNode *p) {
+//    while (!p->rtag && p->rchild)
+//        p = p->rchild;
+//    return p;
+//}
+//ThreadNode* PreNode(ThreadNode *p) {
+//    if (p->rtag)
+//        return p->rchild;
+//    else
+//        return LastNode(p->rchild);
+//}
 
 void threadOrder(ThreadTree T, OrderType type, bool reverse, const function<void(ThreadTree)>& visit) {
 
-//    function<ThreadNode *(ThreadNode *)> FirstNode, NextNode, LastNode, PreNode;
-//
-//    FirstNode = [] (ThreadNode *p)->ThreadNode* {
-//        while (!p->ltag && p->lchild)
-//            p = p->lchild;
-//        return p;
-//    };
-//    NextNode = [&FirstNode] (ThreadNode *p)->ThreadNode* {
-//        if (p->rtag)
-//            return p->rchild;
-//        else
-//            return FirstNode(p->rchild);
-//    };
-//    LastNode = [] (ThreadNode *p)->ThreadNode* {
-//        while (!p->rtag && p->rchild)
-//            p = p->rchild;
-//        return p;
-//    };
-//    PreNode = [&LastNode] (ThreadNode *p)->ThreadNode* {
-//        if (p->rtag)
-//            return p->rchild;
-//        else
-//            return LastNode(p->rchild);
-//    };
+    function<ThreadNode *(ThreadNode *)> FirstNode, NextNode, LastNode, PreNode;
 
     switch (type) {
         case In:
+            FirstNode = [] (ThreadNode *p)->ThreadNode* {
+                while (!p->ltag && p->lchild)
+                    p = p->lchild;
+                return p;
+            };
+            NextNode = [&FirstNode] (ThreadNode *p)->ThreadNode* {
+                if (p->rtag)
+                    return p->rchild;
+                else
+                    return FirstNode(p->rchild);
+            };
+            LastNode = [] (ThreadNode *p)->ThreadNode* {
+                while (!p->rtag && p->rchild)
+                    p = p->rchild;
+                return p;
+            };
+            PreNode = [&LastNode] (ThreadNode *p)->ThreadNode* {
+                if (p->ltag)
+                    return p->lchild;
+                else
+                    return LastNode(p->lchild);
+            };
             break;
         case Pre:
             break;
