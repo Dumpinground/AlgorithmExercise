@@ -112,7 +112,8 @@ void threadBuild(ThreadTree T, OrderType type) {
         }
         pre = q;
     });
-    pre->rtag = true;
+    if (!pre->rchild)
+        pre->rtag = true;
 }
 
 void order(ThreadTree T, OrderType type, const function<void(ThreadTree)> &visit) {
@@ -190,16 +191,49 @@ void threadOrder(ThreadTree T, OrderType type, bool reverse, const function<void
             };
 
             PreNode = [&LastNode] (ThreadNode *p)->ThreadNode* {
-                ThreadTree pa = p->parent;
-                if (pa && !pa->ltag && pa->lchild != p) {
-                    return LastNode(pa->lchild);
+                ThreadTree parent = p->parent;
+                if (parent && !parent->ltag && parent->lchild != p) {
+                    return LastNode(parent->lchild);
                 }
-                return pa;
+                return parent;
             };
 
             break;
 
         case Post:
+
+            LastNode = [] (ThreadNode *p)->ThreadNode* {
+                return p;
+            };
+
+            PreNode = [] (ThreadNode *p)->ThreadNode* {
+                if (!p->rtag)
+                    return p->rchild;
+                return p->lchild;
+
+//                if (p->ltag)
+//                    return p->lchild;
+//                if (!p->rtag) {
+//                    if (p->rchild)
+//                        return p->rchild;
+//                    return p->lchild;
+//                }
+            };
+
+            FirstNode = [] (ThreadNode *p)->ThreadNode* {
+                while (!p->ltag || !p->rtag)
+                    p = p->ltag ? p->rchild : p->lchild;
+                return p;
+            };
+
+            NextNode = [&FirstNode] (ThreadNode *p)->ThreadNode* {
+                if (p->rtag && p->rchild)
+                    return p->rchild;
+                ThreadTree parent = p->parent;
+                if (parent && !parent->rtag && parent->rchild != p)
+                    return FirstNode(parent->rchild);
+                return parent;
+            };
 
             break;
     }

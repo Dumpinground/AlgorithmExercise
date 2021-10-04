@@ -88,9 +88,9 @@ TEST(bt, thread) {
     levelOrder(root, unlink);
 
     threadBuild(root, Post);
-//    threadOrder(root, Post);
-//    cout << endl;
-//    threadOrder(root, Post, true);
-//    cout << endl;
-//    levelOrder(root, unlink);
+    threadOrder(root, Post);
+    cout << endl;
+    threadOrder(root, Post, true);
+    cout << endl;
+    levelOrder(root, unlink);
 }
