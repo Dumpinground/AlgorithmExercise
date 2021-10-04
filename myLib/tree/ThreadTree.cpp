@@ -12,7 +12,7 @@
 using namespace std;
 
 ThreadNode::ThreadNode(ElemType e)
-        : data(e), lchild(NULL), rchild(NULL), ltag(NULL), rtag(NULL) {}
+        : data(e), lchild(NULL), rchild(NULL), ltag(false), rtag(false) {}
 
 void ThreadNode::printTree() {
     map<ThreadNode *, int> treeMap;
@@ -60,7 +60,7 @@ void CompleteBuild(ThreadTree T, const std::vector<ElemType> &es) {
 void threadBuild(ThreadTree T, OrderType type) {
     ThreadNode *pre = NULL;
     order(T, type, [&](ThreadTree q) {
-        if (!q->lchild && pre) {
+        if (!q->lchild) {
             q->lchild = pre;
             q->ltag = true;
         }
@@ -73,7 +73,6 @@ void threadBuild(ThreadTree T, OrderType type) {
 }
 
 void order(ThreadTree T, OrderType type, const function<void(ThreadTree)> &visit) {
-
     if (T) {
         if (type == Pre) visit(T);
         if (!T->ltag) order(T->lchild, type, visit);
@@ -122,7 +121,7 @@ ThreadNode* PreNode(ThreadNode *p) {
         return LastNode(p->rchild);
 }
 
-void threadOrder(ThreadTree T, OrderType type, bool reverse, function<void(ThreadTree T)> visit) {
+void threadOrder(ThreadTree T, OrderType type, bool reverse, const function<void(ThreadTree)>& visit) {
 
 //    function<ThreadNode *(ThreadNode *)> FirstNode, NextNode, LastNode, PreNode;
 //

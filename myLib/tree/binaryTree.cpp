@@ -52,7 +52,6 @@ void CompleteBuild(BiTree T, const std::vector<ElemType>& es) {
 }
 
 void order(BiTree T, OrderType type, const function<void(BiTree)>& visit) {
-
     if (T) {
         if (type == Pre) visit(T);
         order(T->lchild, type, visit);

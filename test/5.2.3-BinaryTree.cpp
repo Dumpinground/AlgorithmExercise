@@ -74,10 +74,15 @@ TEST(bt, thread) {
     };
 
     threadBuild(root, In);
-    order(root, In);
+//    order(root, In, [](ThreadNode* p) {
+//        cout << (p->ltag && p->lchild) << p << p->rtag << endl;
+//    });
+//    auto t5 = root->lchild->rchild;
+//    auto t7 = root->rchild->rchild;
+//    cout << FirstNode(t7->rchild) << endl;
     threadOrder(root, In);
     threadOrder(root, In, true);
-    levelOrder(root, unlink);
+//    levelOrder(root, unlink);
 
 //    threadBuild(root, Pre);
 //    root->printTree();

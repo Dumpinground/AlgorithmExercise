@@ -33,7 +33,12 @@ visit = [](ThreadTree T) { std::cout << T << " "; });
 void levelOrder(ThreadTree T, const std::function<void(ThreadTree)> &
 visit = [](ThreadTree T) { std::cout << T << " "; });
 
-void threadOrder(ThreadTree T, OrderType type, bool reverse = false, std::function<void(ThreadTree T)>
+void threadOrder(ThreadTree T, OrderType type, bool reverse = false, const std::function<void(ThreadTree T)>&
 visit = [](ThreadTree T) { std::cout << T << " "; });
+
+ThreadNode* FirstNode(ThreadNode *p);
+ThreadNode* NextNode(ThreadNode *p);
+ThreadNode* LastNode(ThreadNode *p);
+ThreadNode* PreNode(ThreadNode *p);
 
 #endif //ALGORITHMEXERCISE_THREADTREE_H
