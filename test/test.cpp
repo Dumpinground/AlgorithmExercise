@@ -12,5 +12,5 @@ void cal(F f) {
 }
 
 TEST(test, func) {
-    cout << "";
+    cout << (true || false && false);
 }

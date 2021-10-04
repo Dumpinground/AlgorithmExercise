@@ -21,6 +21,7 @@ add_executable(
         myLib/list/ArrayList.h
         myLib/list/LinkedList.h
         myLib/stack/stack.h
+        test/test.cpp
         test/3.1.4-Stack.cpp
         myLib/list/LinkedList.cpp
         myLib/stack/stack.cpp

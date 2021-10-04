@@ -7,14 +7,26 @@
 
 #include "TreeElement.h"
 
+enum childNode {
+    left = 1,
+    right = 2
+};
+
 struct ThreadNode {
+
     ElemType data;
-    ThreadNode *lchild, *rchild;
+    ThreadNode *lchild, *rchild, *parent;
     bool ltag, rtag;
 
     ThreadNode(ElemType e);
 
+    int depth(int d = 0);
+
+    void append(ThreadNode *p, childNode);
+
     friend std::ostream &operator<<(std::ostream &out, ThreadNode *);
+
+    void showLink();
 
     void printTree();
 };
@@ -35,10 +47,5 @@ visit = [](ThreadTree T) { std::cout << T << " "; });
 
 void threadOrder(ThreadTree T, OrderType type, bool reverse = false, const std::function<void(ThreadTree T)>&
 visit = [](ThreadTree T) { std::cout << T << " "; });
-
-ThreadNode* FirstNode(ThreadNode *p);
-ThreadNode* NextNode(ThreadNode *p);
-ThreadNode* LastNode(ThreadNode *p);
-ThreadNode* PreNode(ThreadNode *p);
 
 #endif //ALGORITHMEXERCISE_THREADTREE_H

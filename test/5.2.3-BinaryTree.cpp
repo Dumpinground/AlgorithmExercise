@@ -55,12 +55,12 @@ TEST(bt, print) {
 
 TEST(bt, thread) {
     vector<ElemType> data;
-    for (int i = 2; i <= 20; ++i) {
+    for (int i = 2; i <= 6; ++i) {
         data.push_back({i});
     }
     ThreadTree root = new ThreadNode({1});
     CompleteBuild(root, data);
-    cout << endl;
+    root->lchild->lchild->append(new ThreadNode({7}), childNode::right);
 
     auto unlink = [](ThreadTree T) {
         if (T->ltag) {
@@ -88,9 +88,9 @@ TEST(bt, thread) {
     levelOrder(root, unlink);
 
     threadBuild(root, Post);
-    threadOrder(root, Post);
-    cout << endl;
-    threadOrder(root, Post, true);
-    cout << endl;
-    levelOrder(root, unlink);
+//    threadOrder(root, Post);
+//    cout << endl;
+//    threadOrder(root, Post, true);
+//    cout << endl;
+//    levelOrder(root, unlink);
 }
