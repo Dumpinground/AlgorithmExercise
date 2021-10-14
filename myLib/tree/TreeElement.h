@@ -10,6 +10,7 @@
 struct ElemType {
 
     int value;
+    char character;
 
     friend std::ostream &operator<<(std::ostream &out, ElemType);
 };

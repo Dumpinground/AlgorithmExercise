@@ -15,8 +15,11 @@ std::ostream &operator<<(std::ostream &out, BiTNode *n) {
     return out;
 }
 
-BiTNode::BiTNode(ElemType e)
-: data(e), lchild(NULL), rchild(NULL) {}
+//BiTNode::BiTNode(ElemType e)
+//: data(e), lchild(NULL), rchild(NULL) {}
+
+BiTNode::BiTNode(ElemType e, BiTNode *left, BiTNode *right) :
+        data(e), lchild(left), rchild(right) {}
 
 BiTNode::BiTNode(BiTNode *T) {
     *this = *T;

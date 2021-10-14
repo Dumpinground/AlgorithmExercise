@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <queue>
+#include <stack>
 
 #include "../myLib/tree/binaryTree.h"
 #include "../myLib/tree/ThreadTree.h"
@@ -93,4 +94,57 @@ TEST(bt, thread) {
     threadOrder(root, Post, true);
     cout << endl;
     levelOrder(root, unlink);
+}
+
+void InvertLevel(BiTree T, function<void(BiTNode *n)> visit) {
+    stack<BiTNode *> S;
+    levelOrder(T, [&S](BiTNode *n) {
+        S.push(n);
+    });
+    while (!S.empty()) {
+        visit(S.top());
+        S.pop();
+    }
+}
+
+TEST(bt, 4) {
+    BiTree T =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    new BiTNode({4}),
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7})));
+    InvertLevel(T, [](BiTNode *n) { cout << n << " "; });
+}
+
+TEST(bt, 6) {
+    BiTree T =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    new BiTNode({4}),
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7})));
+
+    struct treeArray {
+        BiTree data[7];
+        int i = 0;
+    } A, B;
+    order(T, Pre, [&A](BiTNode *n) {
+        A.data[A.i++] = n;
+    });
+    order(T, In, [&B](BiTNode *n) {
+        B.data[B.i++] = n;
+    });
+    for (auto d: A.data) {
+        cout << d->data << " ";
+    }
+    cout << endl;
+    for (auto d: B.data) {
+        cout << d->data << " ";
+    }
+    cout << endl;
 }

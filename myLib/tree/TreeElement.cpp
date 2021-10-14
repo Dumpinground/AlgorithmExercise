@@ -5,6 +5,11 @@
 #include "TreeElement.h"
 
 std::ostream &operator<<(std::ostream &out, ElemType e) {
-    out << "{ " << e.value << " }";
+    out << "{";
+    if (e.value)
+        out << " " << e.value;
+    if (e.character)
+        out << " " << e.character;
+    out << " }";
     return out;
 }

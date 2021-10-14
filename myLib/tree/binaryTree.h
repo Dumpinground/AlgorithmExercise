@@ -16,7 +16,8 @@ struct BiTNode {
     ElemType data;
     BiTNode *lchild, *rchild;
 
-    BiTNode(ElemType e);
+//    BiTNode(ElemType e);
+    BiTNode(ElemType e, BiTNode *left=NULL, BiTNode *right=NULL);
     BiTNode(BiTNode* T);
 
     friend std::ostream &operator<<(std::ostream &out, BiTNode *);
