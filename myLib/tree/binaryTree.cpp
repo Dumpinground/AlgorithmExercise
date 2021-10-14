@@ -106,3 +106,39 @@ void levelOrder(BiTree T, const function<void(BiTree)>& visit) {
     }
     cout << endl;
 }
+
+bool BST_Insert(BiTree &T, ElemType e) {
+    if (T) {
+        if (e.value < T->data.value)
+            return BST_Insert(T->lchild, e);
+        if (e.value > T->data.value)
+            return BST_Insert(T->rchild, e);
+        return false;
+    }
+    T = new BiTNode(e);
+    return true;
+}
+
+void CreateBST(BiTree &T, std::vector<int> es) {
+    for (auto &e : es) {
+        BST_Insert(T, {e});
+    }
+}
+
+BiTNode *BST_Search(BiTree T, int key) {
+
+    while (T && T->data.value != key)
+        if (key < T->data.value)
+            T = T->lchild;
+        else
+            T = T->rchild;
+    return T;
+
+//    if (T) {
+//        if (key < T->data.value)
+//            return BST_Search(T->lchild, key);
+//        if (key > T->data.value)
+//            return BST_Search(T->rchild, key);
+//    }
+//    return T;
+}

@@ -41,4 +41,10 @@ void PostOrder(BiTree T);
 void levelOrder(BiTree T, const std::function<void(BiTree)>&
 visit = [](BiTree T) { std::cout << T << " "; });
 
+bool BST_Insert(BiTree &T, ElemType e);
+
+void CreateBST(BiTree &T, std::vector<int> es);
+
+BiTNode *BST_Search(BiTree T, int key);
+
 #endif //ALGORITHMEXERCISE_BINARYTREE_H

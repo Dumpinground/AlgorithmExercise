@@ -4,7 +4,10 @@
 
 #include "Tree.h"
 
-#include <utility>
+#include <queue>
+
+using namespace std;
+
 
 using namespace std;
 
@@ -40,7 +43,21 @@ void order(TreeNode *R, OrderType type, std::function<void(TreeNode *)> visit) {
         }
 }
 
-void order(CSNode *R, OrderType type, std::function<void(CSNode *)> visit) {
+void levelOrder(TreeNode *R, function<void(TreeNode*)> visit) {
+    queue<TreeNode *> Q;
+    TreeNode *p;
+    Q.push(R);
+    while (!Q.empty()) {
+        p = Q.front();
+        Q.pop();
+        visit(p);
+        for (auto child : p->children) {
+            if (child) Q.push(child);
+        }
+    }
+}
+
+void order(CSNode *R, OrderType type, function<void(CSNode *)> visit) {
     if (R)
         switch (type) {
             case Pre:

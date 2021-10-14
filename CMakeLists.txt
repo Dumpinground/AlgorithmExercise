@@ -42,6 +42,9 @@ add_executable(
         myLib/tree/Tree.h
         myLib/tree/Tree.cpp
         test/5.4.5-TreeForest.cpp
+        myLib/tree/binarySearchTree.h
+        myLib/tree/binarySearchTree.cpp
+        test/5.5.4-TreeApplication.cpp
 )
 
 include(GoogleTest)

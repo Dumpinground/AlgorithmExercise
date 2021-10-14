@@ -58,6 +58,9 @@ typedef CSNode *CSTree;
 void order(TreeNode *R, OrderType type, std::function<void(TreeNode*)>
 visit = [](TreeNode *r) { std::cout << r->data << " "; });
 
+void levelOrder(TreeNode *R, std::function<void(TreeNode*)>
+visit = [](TreeNode *r) { std::cout << r->data << " "; });
+
 void order(CSNode *R, OrderType type, std::function<void(CSNode*)>
 visit = [](CSNode *r) { std::cout << r->data << " "; });
 

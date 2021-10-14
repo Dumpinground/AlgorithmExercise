@@ -119,6 +119,39 @@ TEST(bt, 4) {
     InvertLevel(T, [](BiTNode *n) { cout << n << " "; });
 }
 
+int BtDepth(BiTree T) {
+    int deep = 0;
+    queue<BiTNode *> Q;
+    BiTNode *front, *rear, *last;
+    Q.push(T);
+    last = rear = Q.back();
+    while (!Q.empty()) {
+        front = Q.front();
+        Q.pop();
+        if (front->lchild)
+            Q.push(front->lchild);
+        if (front->rchild)
+            Q.push(front->rchild);
+        rear = Q.back();
+        if (front == last) {
+            last = rear;
+            deep++;
+        }
+    }
+    return deep;
+}
+
+TEST(bt, 5) {
+    BiTree T = new BiTNode({1},
+                new BiTNode({2},
+                            NULL,
+                            new BiTNode({5})),
+                new BiTNode({3},
+                            new BiTNode({6}),
+                            new BiTNode({7})));
+    cout << BtDepth(T) << endl;
+}
+
 TEST(bt, 6) {
     BiTree T =
             new BiTNode({1},
@@ -147,4 +180,130 @@ TEST(bt, 6) {
         cout << d->data << " ";
     }
     cout << endl;
+}
+
+bool IsComplete(BiTree T) {
+    queue<BiTNode *> Q;
+    BiTNode *p;
+    if (!T)
+        return true;
+    Q.push(T);
+    while (!Q.empty()) {
+        p = Q.front();
+        Q.pop();
+        if (p) {
+            Q.push(p->lchild);
+            Q.push(p->rchild);
+        } else {
+            while (!Q.empty()) {
+                p = Q.front();
+                Q.pop();
+                if (p)
+                    return false;
+            }
+        }
+    }
+    return true;
+}
+
+TEST(bt, 7) {
+    BiTree T1 =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    new BiTNode({4}),
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7}))),
+    T2 =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    NULL,
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7})));
+
+    cout << IsComplete(T1) << " " << IsComplete(T2) << endl;
+}
+
+int DSonNodes(BiTNode *n) {
+    if (!n)
+        return 0;
+    if (n->lchild && n->rchild)
+        return DSonNodes(n->lchild) + DSonNodes(n->rchild) + 1;
+    else
+        return DSonNodes(n->lchild) + DSonNodes(n->rchild);
+}
+
+TEST(bt, 8) {
+    BiTree T =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    new BiTNode({4}),
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7})));
+    cout << DSonNodes(T) << endl;
+}
+
+void swap(BiTNode *n) {
+    if (n) {
+        swap(n->lchild);
+        swap(n->rchild);
+        auto temp = n->lchild;
+        n->lchild = n->rchild;
+        n->rchild = temp;
+    }
+}
+
+TEST(bt, 9) {
+    BiTree T =
+            new BiTNode({1},
+                        new BiTNode({2},
+                                    new BiTNode({4}),
+                                    new BiTNode({5})),
+                        new BiTNode({3},
+                                    new BiTNode({6}),
+                                    new BiTNode({7})));
+
+    swap(T);
+    levelOrder(T);
+}
+
+TEST(bt, 19) {
+
+}
+
+string BtreeToE(BiTree T) {
+    string expression;
+    stack<char> S;
+    order(T, In, [&](BiTNode *p) {
+        char c = p->data.character;
+        if ('a' <= c && c <= 'z')
+
+        S.push(c);
+    });
+    return expression;
+}
+
+TEST(bt, 20) {
+    BiTree A = new BiTNode({NULL, '*'},
+                           new BiTNode({NULL, '+'},
+                                       new BiTNode({NULL, 'a'}),
+                                       new BiTNode({NULL, 'b'})),
+                           new BiTNode({NULL, '*'},
+                                       new BiTNode({NULL, 'c'}),
+                                       new BiTNode({NULL, '-'},
+                                                   new BiTNode({NULL, 'd'}))));
+    BiTree B = new BiTNode({NULL, '+'},
+                           new BiTNode({NULL, '*'},
+                                       new BiTNode({NULL, 'a'}),
+                                       new BiTNode({NULL, 'b'})),
+                           new BiTNode({NULL, '-'},
+                                       new BiTNode({NULL, '-'},
+                                                   new BiTNode({NULL, 'c'}),new BiTNode({NULL, 'd'}))));
+
+    cout << BtreeToE(A) << endl << BtreeToE(B) << endl;
 }
