@@ -54,7 +54,7 @@ void BiTNode::printTree() {
         return --b;
     };
 
-    auto append = [&](int prevPos, BiTNode *app, char fc = ' ') {
+    auto append = [&](unsigned long long prevPos, BiTNode *app, char fc = ' ') {
         for (unsigned long long i = 0; i < distanceMap[app] - prevPos; ++i) {
 //            cout << " ";
             result += fc;
@@ -69,9 +69,7 @@ void BiTNode::printTree() {
         distance += p->data.length();
     });
 
-    BiTNode *prevNode = NULL;
-    int prevPos = 0;
-    stack<BiTNode *> S;
+    unsigned long long prevPos = 0;
     int level = 0;
     levelOrder(this, [&](BiTNode *p) {
         levelMap[p] = level;
@@ -80,33 +78,30 @@ void BiTNode::printTree() {
         a--, c++;
         lo = {*a, *b, *c};
         char fc;
-        append(prevPos, p);
-//        if (a != c) {
-//            if (a == nodeList.end() || levelMap[*c] > levelMap[*a]) {
-//                stack<BiTNode *>().swap(S);
-//                S.push(*c);
-//                fc = ' ';
-//                append(prevNode, *b, fc);
-//                for (int i = 0; i < ((*c)->data.length() + 1) / 2; ++i) {
-//                    result += '-';
-//                }
-//                result.replace(result.end() - 1, result.end(), "+");
-//            } else if (c == nodeList.end() || levelMap[*a] > levelMap[*c]) {
-//                fc = '-';
-//                append(prevNode, *b, fc);
-//                S.pop();
-//            }
-//        } else {
-//            append(NULL, *b);
-//        }
+        if (a != c) {
+            if (a == nodeList.end() || levelMap[*c] > levelMap[*a]) {
+                append(prevPos, *b);
+                unsigned long long halfLength = distanceMap[*c] + ((*c)->data.length() + 1) / 2 - distanceMap[p] - p->data.length();
+                for (int i = 1; i < halfLength; ++i) {
+                    result += '-';
+                }
+                prevPos = distanceMap[*c] + ((*c)->data.length() + 1) / 2;
+                result += '+';
+            } else if (c == nodeList.end() || levelMap[*a] > levelMap[*c]) {
+                while (prevPos < distanceMap[*a] + ((*a)->data.length() + 1) / 2) {
+                    result += ' ';
+                    prevPos++;
+                }
+                append(prevPos, *b, '-');
+                prevPos = distanceMap[p] + p->data.length();
+            }
+        } else {
+            append(prevPos, *b);
+        }
         if (c == nodeList.end()) {
             result += '\n';
-            prevNode = NULL;
             prevPos = 0;
             level++;
-        } else {
-            prevNode = *b;
-            prevPos = distanceMap[p] + p->data.length();
         }
     });
 //    cout << endl;
