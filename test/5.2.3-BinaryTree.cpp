@@ -53,8 +53,16 @@ TEST(bt, print) {
     }
     BiTree root = new BiTNode({1});
     CompleteBuild(root, data);
-    root->printTree();
+//    root->printTree();
 
+    BiTree T = new BiTNode({1},
+                           new BiTNode({2},
+                                       NULL,
+                                       new BiTNode({5})),
+                           new BiTNode({3},
+                                       new BiTNode({6}),
+                                       new BiTNode({7})));
+    T->printTree();
 }
 
 TEST(bt, thread) {

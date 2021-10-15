@@ -86,13 +86,13 @@ void BiTNode::printTree() {
         auto a = b, c = b;
         a--, c++;
         lo = {*a, *b, *c};
-        if (a == nodeList.end()) {
-//            cout << endl;
+        appendPrev(prevNode, *b);
+        if (c == nodeList.end()) {
             result += '\n';
             prevNode = NULL;
+        } else {
+            prevNode = *b;
         }
-        appendPrev(prevNode, *b);
-        prevNode = *b;
     });
 //    cout << endl;
     cout << result << endl;
