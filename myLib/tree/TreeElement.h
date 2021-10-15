@@ -12,6 +12,9 @@ struct ElemType {
     int value;
     char character;
 
+    unsigned long long length() const;
+    std::string toString() const;
+
     friend std::ostream &operator<<(std::ostream &out, ElemType);
 };
 

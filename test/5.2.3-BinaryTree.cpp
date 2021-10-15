@@ -44,6 +44,8 @@ TEST(bt, order) {
     }
 }
 
+#include <list>
+
 TEST(bt, print) {
     vector<ElemType> data;
     for (int i = 2; i <= 20; ++i) {
@@ -52,6 +54,7 @@ TEST(bt, print) {
     BiTree root = new BiTNode({1});
     CompleteBuild(root, data);
     root->printTree();
+
 }
 
 TEST(bt, thread) {
@@ -289,21 +292,21 @@ string BtreeToE(BiTree T) {
 }
 
 TEST(bt, 20) {
-    BiTree A = new BiTNode({NULL, '*'},
-                           new BiTNode({NULL, '+'},
-                                       new BiTNode({NULL, 'a'}),
-                                       new BiTNode({NULL, 'b'})),
-                           new BiTNode({NULL, '*'},
-                                       new BiTNode({NULL, 'c'}),
-                                       new BiTNode({NULL, '-'},
-                                                   new BiTNode({NULL, 'd'}))));
-    BiTree B = new BiTNode({NULL, '+'},
-                           new BiTNode({NULL, '*'},
-                                       new BiTNode({NULL, 'a'}),
-                                       new BiTNode({NULL, 'b'})),
-                           new BiTNode({NULL, '-'},
-                                       new BiTNode({NULL, '-'},
-                                                   new BiTNode({NULL, 'c'}),new BiTNode({NULL, 'd'}))));
+    BiTree A = new BiTNode({0, '*'},
+                           new BiTNode({0, '+'},
+                                       new BiTNode({0, 'a'}),
+                                       new BiTNode({0, 'b'})),
+                           new BiTNode({0, '*'},
+                                       new BiTNode({0, 'c'}),
+                                       new BiTNode({0, '-'},
+                                                   new BiTNode({0, 'd'}))));
+    BiTree B = new BiTNode({0, '+'},
+                           new BiTNode({0, '*'},
+                                       new BiTNode({0, 'a'}),
+                                       new BiTNode({0, 'b'})),
+                           new BiTNode({0, '-'},
+                                       new BiTNode({0, '-'},
+                                                   new BiTNode({0, 'c'}),new BiTNode({0, 'd'}))));
 
     cout << BtreeToE(A) << endl << BtreeToE(B) << endl;
 }

@@ -27,6 +27,13 @@ struct BiTNode {
 
 typedef BiTNode *BiTree;
 
+struct AVLNode {
+    int key, balance;
+    AVLNode *lchild, *rchild;
+};
+
+typedef AVLNode *AVLTree;
+
 void CompleteBuild(BiTree T, const std::vector<ElemType> &es);
 
 void order(BiTree T, OrderType type, const std::function<void(BiTree)>&
@@ -46,5 +53,7 @@ bool BST_Insert(BiTree &T, ElemType e);
 void CreateBST(BiTree &T, std::vector<int> es);
 
 BiTNode *BST_Search(BiTree T, int key);
+
+bool BST_Delete(BiTree &T, int key);
 
 #endif //ALGORITHMEXERCISE_BINARYTREE_H

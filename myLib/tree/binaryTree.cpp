@@ -5,6 +5,7 @@
 #include <iostream>
 #include <queue>
 #include <map>
+#include <list>
 #include <functional>
 #include "binaryTree.h"
 
@@ -26,17 +27,81 @@ BiTNode::BiTNode(BiTNode *T) {
 }
 
 void BiTNode::printTree() {
-    map<BiTNode *, int> treeMap;
+    map<BiTNode *, int> numberMap;
     int n = 0;
-    order(this, In, [&](BiTree T) {
-        treeMap[T] = n++;
-    });
-    levelOrder(this, [&](BiTree T) {
-        for (int i = 0; i < treeMap[T]; ++i) {
-            cout << "\t";
+    unsigned long long distance = 0;
+    string result;
+    map<BiTNode *, unsigned long long> distanceMap;
+    list<BiTNode *> nodeList;
+
+    struct Location {
+        BiTNode *left, *middle, *right;
+    };
+
+    auto clear = [](BiTNode *p)->bool {
+        return p->rchild;
+    };
+
+    auto nodeInsert = [&numberMap](list<BiTNode *> &L, BiTNode *p)->Location {
+        Location locate;
+        auto b = L.begin();
+        if (L.empty()) {
+            L.push_back(p);
+            b++;
+        } else {
+            for (b = L.begin(); b != L.end(); b++) {
+                if (numberMap[p] < numberMap[*b]) {
+                    b = L.insert(b, p);
+                    break;
+                }
+            }
         }
-        cout << T << endl;
+        auto a = b, c = b;
+        locate.middle = *b;
+        a--, c++;
+        if (a != L.end())
+            locate.left = *a;
+        if (c != L.end())
+            locate.right = *c;
+        return locate;
+    };
+
+    auto isLeft = [&numberMap](BiTNode *p1, BiTNode *p2)->bool {
+        return numberMap[p1] < numberMap[p2];
+    };
+
+    auto append = [&](BiTNode *prev, BiTNode *app) {
+        unsigned long long prev_length = 0;
+        if (prev)
+            prev_length = distanceMap[prev] + prev->data.length();
+        for (int i = 0; i < distanceMap[app] - prev_length; ++i) {
+//            cout << " ";
+            result += " ";
+        }
+//        cout << app->data.toString();
+        result += app->data.toString();
+    };
+
+    order(this, In, [&](BiTNode *p) {
+        numberMap[p] = n++;
+        distanceMap[p] = distance;
+        distance += p->data.length();
     });
+    levelOrder(this, [&](BiTNode *p) {
+        auto locate = nodeInsert(nodeList, p);
+        if (!locate.left) {
+            cout << endl;
+            result += '\n';
+        }
+        append(locate.left, locate.middle);
+
+//        for (int i = 0; i < distanceMap[p]; ++i) {
+//            cout << "*";
+//        }
+//        cout << p << endl;
+    });
+//    cout << endl;
+    cout << result << endl;
 }
 
 void CompleteBuild(BiTree T, const std::vector<ElemType>& es) {
@@ -141,4 +206,31 @@ BiTNode *BST_Search(BiTree T, int key) {
 //            return BST_Search(T->rchild, key);
 //    }
 //    return T;
+}
+
+//TODO need fix
+bool BST_Delete(BiTree &T, int key) {
+    BiTNode *p = BST_Search(T, key);
+
+    auto replace = [&p](BiTNode *child) {
+        BiTNode *re;
+        order(child, In, [&re](BiTNode *n) {
+            if (!re)
+                re = n;
+        });
+        p->data = re->data;
+        BST_Delete(re, re->data.value);
+    };
+
+    if (!p)
+        return false;
+    if (p->lchild) {
+        replace(p->lchild);
+        return true;
+    } else if (p->rchild) {
+        replace(p->rchild);
+        return true;
+    }
+    p = NULL;
+    return true;
 }

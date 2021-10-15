@@ -4,12 +4,23 @@
 
 #include "TreeElement.h"
 
+using namespace std;
+
 std::ostream &operator<<(std::ostream &out, ElemType e) {
-    out << "{";
-    if (e.value)
-        out << " " << e.value;
-    if (e.character)
-        out << " " << e.character;
-    out << " }";
+    out << e.toString();
     return out;
+}
+
+std::string ElemType::toString() const {
+    string s = "{";
+    if (value)
+        s += " " + to_string(value);
+    if (character)
+        s += " " + to_string(character);
+    s += " }";
+    return s;
+}
+
+unsigned long long ElemType::length() const {
+    return toString().length();
 }
