@@ -36,45 +36,36 @@ void BiTNode::printTree() {
 
     struct Location {
         BiTNode *left, *middle, *right;
-    };
+    } lo;
 
-    auto clear = [](BiTNode *p)->bool {
-        return p->rchild;
-    };
-
-    auto nodeInsert = [&numberMap](list<BiTNode *> &L, BiTNode *p)->Location {
-        Location locate;
+    auto nodeInsert = [&numberMap](list<BiTNode *> &L, BiTNode *p)->list<BiTNode *>::iterator {
         auto b = L.begin();
-        if (L.empty()) {
-            L.push_back(p);
-            b++;
-        } else {
+        if (!L.empty()) {
             for (b = L.begin(); b != L.end(); b++) {
                 if (numberMap[p] < numberMap[*b]) {
                     b = L.insert(b, p);
-                    break;
+                    return b;
                 }
             }
         }
-        auto a = b, c = b;
-        locate.middle = *b;
-        a--, c++;
-        if (a != L.end())
-            locate.left = *a;
-        if (c != L.end())
-            locate.right = *c;
-        return locate;
+        L.push_back(p);
+        b = L.end();
+        return --b;
     };
 
-    auto isLeft = [&numberMap](BiTNode *p1, BiTNode *p2)->bool {
-        return numberMap[p1] < numberMap[p2];
+    auto append = [&](BiTNode *app) {
+        unsigned long long prev_length = 0;
+        for (int i = 0; i < distanceMap[app]; ++i) {
+            result += " ";
+        }
+        result += app->data.toString();
     };
 
-    auto append = [&](BiTNode *prev, BiTNode *app) {
+    auto appendPrev = [&](BiTNode *prev, BiTNode *app) {
         unsigned long long prev_length = 0;
         if (prev)
             prev_length = distanceMap[prev] + prev->data.length();
-        for (int i = 0; i < distanceMap[app] - prev_length; ++i) {
+        for (unsigned long long i = 0; i < distanceMap[app] - prev_length; ++i) {
 //            cout << " ";
             result += " ";
         }
@@ -87,18 +78,21 @@ void BiTNode::printTree() {
         distanceMap[p] = distance;
         distance += p->data.length();
     });
-    levelOrder(this, [&](BiTNode *p) {
-        auto locate = nodeInsert(nodeList, p);
-        if (!locate.left) {
-            cout << endl;
-            result += '\n';
-        }
-        append(locate.left, locate.middle);
+    cout << endl;
 
-//        for (int i = 0; i < distanceMap[p]; ++i) {
-//            cout << "*";
-//        }
-//        cout << p << endl;
+    BiTNode *prevNode;
+    levelOrder(this, [&](BiTNode *p) {
+        auto b = nodeInsert(nodeList, p);
+        auto a = b, c = b;
+        a--, c++;
+        lo = {*a, *b, *c};
+        if (a == nodeList.end()) {
+//            cout << endl;
+            result += '\n';
+            prevNode = NULL;
+        }
+        appendPrev(prevNode, *b);
+        prevNode = *b;
     });
 //    cout << endl;
     cout << result << endl;
