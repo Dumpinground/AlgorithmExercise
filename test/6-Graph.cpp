@@ -30,10 +30,12 @@ TEST(graph, testMGraph) {
     MGraph graph({'A', 'B', 'C', 'D', 'E', 'F'}, arrows);
     cout << Adjacent(graph, 2, 3) << " " << Adjacent(graph, 4, 2) << endl;
     Neighbors(graph, 0);
+    InsertVertex(graph, 'G');
 }
 
 TEST(graph, testALGraph) {
     ALGraph graph({'A', 'B', 'C', 'D', 'E', 'F'}, arrows);
     cout << Adjacent(graph, 2, 3) << " " << Adjacent(graph, 4, 2) << endl;
     Neighbors(graph, 0);
+    InsertVertex(graph, 'G');
 }

@@ -21,23 +21,17 @@ namespace basic {
     };
 }
 
-/** Adjacency Matrix \n
- * G A B C D E F \n
- * A 0 1 1 1 0 0 \n
- * B 1 0 0 0 1 1 \n
- * C 1 0 0 0 1 0 \n
- * D 1 0 0 0 0 1 \n
- * E 0 1 1 0 0 0 \n
- * F 0 1 0 1 0 0 \n
- */
+struct Graph;
+struct Vertex;
+
 struct MGraph {
     char Vex[MaxVertexNum];
     int Edge[MaxVertexNum][MaxVertexNum];
     int vexNum, arcNum;
 
+    MGraph() = default;
     MGraph(std::vector<char> vertex, std::vector<std::vector<int>> edges);
 };
-
 
 typedef char VertexType;
 
@@ -59,30 +53,28 @@ struct ALGraph {
     AdjList vertices;
     int vexNum, arcNum;
 
+    ALGraph() = default;
     ALGraph(std::vector<char> vertex, std::vector<std::vector<int>> edges);
 
     void append(int x, int y);
 };
 
-struct Graph;
-struct Vertex;
-
-bool Adjacent(Graph G, Vertex x, Vertex y);
-
+bool Adjacent(Graph G, int x, int y);
 bool Adjacent(MGraph G, int x, int y);
 bool Adjacent(ALGraph G, int x, int y);
 
-void Neighbors(Graph G, Vertex x);
-
+void Neighbors(Graph G, int x);
 void Neighbors(MGraph G, int x);
 void Neighbors(ALGraph G, int x);
 
-void InsertVertex(Graph G, Vertex x);
-
+void InsertVertex(Graph G, char x);
 void InsertVertex(MGraph G, char x);
 void InsertVertex(ALGraph G, char x);
 
 void DeleteVertex(Graph G, Vertex x);
+void DeleteVertex(MGraph G, int x);
+void DeleteVertex(ALGraph G, int x);
+
 bool AddEdge(Graph G, Vertex x, Vertex y);
 bool RemoveEdge(Graph G, Vertex x, Vertex y);
 int FirstNeighbor(Graph G, Vertex x);

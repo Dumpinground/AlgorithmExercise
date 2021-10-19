@@ -57,7 +57,7 @@ bool Adjacent(MGraph G, int x, int y) {
 }
 
 bool Adjacent(ALGraph G, int x, int y) {
-    ArcNode *p = G.vertices[x].first->next;
+    ArcNode *p = G.vertices[x].first;
     while (p) {
         if (p->adjVex == y)
             return true;
@@ -82,14 +82,14 @@ void Neighbors(MGraph G, int x) {
 
 void Neighbors(ALGraph G, int x) {
     cout << "Vertex: " << G.vertices[x].data << endl << "out:";
-    auto *p = G.vertices[x].first->next;
+    auto *p = G.vertices[x].first;
     while (p) {
         cout << " <" << x << ", " << p->adjVex << ">";
         p = p->next;
     }
     cout << endl << "in:";
     for (int i = 0; i < G.vexNum; ++i) {
-        p = G.vertices[i].first->next;
+        p = G.vertices[i].first;
         while (p) {
             if (p->adjVex == x)
                 cout << " <" << i << ", " << x << ">";
