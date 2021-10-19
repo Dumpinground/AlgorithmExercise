@@ -77,7 +77,6 @@ void BiTNode::printTree() {
         auto a = b, c = b;
         a--, c++;
         lo = {*a, *b, *c};
-        char fc;
         if (a != c) {
             if (a == nodeList.end() || levelMap[*c] > levelMap[*a]) {
                 append(prevPos, *b);

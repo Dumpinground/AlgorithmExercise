@@ -44,8 +44,6 @@ TEST(bt, order) {
     }
 }
 
-#include <list>
-
 TEST(bt, print) {
     vector<ElemType> data;
     for (int i = 2; i <= 20; ++i) {
@@ -280,7 +278,7 @@ TEST(bt, 9) {
                                     new BiTNode({7})));
 
     swap(T);
-    levelOrder(T);
+    T->printTree();
 }
 
 TEST(bt, 19) {

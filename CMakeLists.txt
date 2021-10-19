@@ -45,6 +45,9 @@ add_executable(
         myLib/tree/binarySearchTree.h
         myLib/tree/binarySearchTree.cpp
         test/5.5.4-TreeApplication.cpp
+        myLib/graph/Graph.h
+        myLib/graph/Graph.cpp
+        test/6-Graph.cpp
 )
 
 include(GoogleTest)
