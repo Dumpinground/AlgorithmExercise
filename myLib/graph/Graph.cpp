@@ -52,11 +52,11 @@ void ALGraph::append(int x, int y) {
     p = new ArcNode(y);
 }
 
-bool Adjacent(MGraph G, int x, int y) {
+bool Adjacent(const MGraph& G, int x, int y) {
     return G.Edge[x][y];
 }
 
-bool Adjacent(ALGraph G, int x, int y) {
+bool Adjacent(ALGraph &G, int x, int y) {
     ArcNode *p = G.vertices[x].first;
     while (p) {
         if (p->adjVex == y)
@@ -66,7 +66,12 @@ bool Adjacent(ALGraph G, int x, int y) {
     return false;
 }
 
-void Neighbors(MGraph G, int x) {
+void Neighbors(MGraph &G, int x) {
+    if (G.invalid.find(x) != G.invalid.end()) {
+        cout << "vertex deleted" << endl;
+        return;
+    }
+
     cout << "Vertex: " << G.Vex[x] << endl << "out:";
     for (int i = 0; i < G.vexNum; ++i) {
         if (G.Edge[x][i])
@@ -80,7 +85,7 @@ void Neighbors(MGraph G, int x) {
     cout << endl;
 }
 
-void Neighbors(ALGraph G, int x) {
+void Neighbors(ALGraph &G, int x) {
     cout << "Vertex: " << G.vertices[x].data << endl << "out:";
     auto *p = G.vertices[x].first;
     while (p) {
@@ -99,10 +104,25 @@ void Neighbors(ALGraph G, int x) {
     cout << endl;
 }
 
-void InsertVertex(MGraph G, char x) {
-    G.Vex[G.vexNum++] = x;
+void InsertVertex(MGraph &G, char x) {
+    int p;
+    if (G.invalid.empty())
+        G.Vex[G.vexNum++] = x;
+    else {
+        auto it = G.invalid.begin();
+        G.Vex[*it] = x;
+        G.invalid.erase(it);
+    }
 }
 
-void InsertVertex(ALGraph G, char x) {
+void InsertVertex(ALGraph &G, char x) {
     G.vertices[G.vexNum++].data = x;
+}
+
+void DeleteVertex(MGraph &G, int x) {
+    G.invalid.insert(x);
+    for (int i = 0; i < G.vexNum; ++i) {
+        G.Edge[x][i] = 0;
+        G.Edge[i][x] = 0;
+    }
 }

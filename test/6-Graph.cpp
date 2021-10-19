@@ -30,7 +30,11 @@ TEST(graph, testMGraph) {
     MGraph graph({'A', 'B', 'C', 'D', 'E', 'F'}, arrows);
     cout << Adjacent(graph, 2, 3) << " " << Adjacent(graph, 4, 2) << endl;
     Neighbors(graph, 0);
+    DeleteVertex(graph, 4);
+    cout << Adjacent(graph, 4, 2) << endl;
+    Neighbors(graph, 4);
     InsertVertex(graph, 'G');
+    Neighbors(graph, 4);
 }
 
 TEST(graph, testALGraph) {

@@ -7,6 +7,7 @@
 
 #include <climits>
 #include <vector>
+#include <set>
 
 #define MaxVertexNum 100
 #define INFINITY INT_MAX
@@ -28,6 +29,7 @@ struct MGraph {
     char Vex[MaxVertexNum];
     int Edge[MaxVertexNum][MaxVertexNum];
     int vexNum, arcNum;
+    std::set<int> invalid;
 
     MGraph() = default;
     MGraph(std::vector<char> vertex, std::vector<std::vector<int>> edges);
@@ -60,20 +62,20 @@ struct ALGraph {
 };
 
 bool Adjacent(Graph G, int x, int y);
-bool Adjacent(MGraph G, int x, int y);
-bool Adjacent(ALGraph G, int x, int y);
+bool Adjacent(const MGraph& G, int x, int y);
+bool Adjacent(ALGraph &G, int x, int y);
 
 void Neighbors(Graph G, int x);
-void Neighbors(MGraph G, int x);
-void Neighbors(ALGraph G, int x);
+void Neighbors(MGraph &G, int x);
+void Neighbors(ALGraph &G, int x);
 
 void InsertVertex(Graph G, char x);
-void InsertVertex(MGraph G, char x);
-void InsertVertex(ALGraph G, char x);
+void InsertVertex(MGraph &G, char x);
+void InsertVertex(ALGraph &G, char x);
 
 void DeleteVertex(Graph G, Vertex x);
-void DeleteVertex(MGraph G, int x);
-void DeleteVertex(ALGraph G, int x);
+void DeleteVertex(MGraph &G, int x);
+void DeleteVertex(ALGraph &G, int x);
 
 bool AddEdge(Graph G, Vertex x, Vertex y);
 bool RemoveEdge(Graph G, Vertex x, Vertex y);
