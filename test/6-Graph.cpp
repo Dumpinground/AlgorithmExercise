@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <vector>
 
 #include "../myLib/graph/Graph.h"
 
@@ -46,4 +45,26 @@ TEST(graph, testALGraph) {
     Neighbors(graph, 4);
     InsertVertex(graph, 'G');
     Neighbors(graph, 4);
+}
+
+Graph searchG1 = {
+        {'1', '2', '3', '4', '5', '6', '7', '8'},
+        {
+                {1, 2}, {1, 5},
+                {2, 6},
+                {6, 3}, {6, 7},
+                {3, 4}, {3, 7},
+                {4, 7}, {4, 8},
+                {7, 8}
+        },
+        false,
+        -1
+};
+
+TEST(graph, testBFS) {
+    MGraph graphM(searchG1);
+    Neighbors(graphM, 1);
+    BFSTraverse(graphM);
+    cout << endl;
+    DFSTraverse(graphM);
 }

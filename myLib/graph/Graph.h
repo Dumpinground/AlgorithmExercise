@@ -8,6 +8,8 @@
 #include <climits>
 #include <vector>
 #include <set>
+#include <functional>
+#include <iostream>
 
 #define MaxVertexNum 100
 #define INFINITY INT_MAX
@@ -22,7 +24,17 @@ namespace basic {
     };
 }
 
-struct Graph;
+struct Graph {
+    std::vector<char> _vertices;
+    std::vector<std::vector<int>> _edges;
+    bool _directionality;
+
+    Graph(std::vector<char> vertices, std::vector<std::vector<int>> edges, bool directionality = true, int offset = 0);
+
+    const std::vector<char> &vertices() const;
+    std::vector<std::vector<int>> edges() const;
+};
+
 struct Vertex;
 
 struct MGraph {
@@ -32,7 +44,9 @@ struct MGraph {
     std::set<int> invalid;
 
     MGraph() = default;
-    MGraph(std::vector<char> vertex, std::vector<std::vector<int>> edges);
+    void Init(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    MGraph(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    MGraph(const Graph &graph);
 };
 
 typedef char VertexType;
@@ -58,7 +72,9 @@ struct ALGraph {
     std::set<int> invalid;
 
     ALGraph() = default;
-    ALGraph(std::vector<char> vertex, std::vector<std::vector<int>> edges);
+    void Init(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    ALGraph(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    ALGraph(const Graph &graph);
 
     void append(int x, int y);
 };
@@ -102,6 +118,12 @@ int Get_Edge_Value(const ALGraph& G, int x, int y);
 void Set_Edge_Value(Graph G, Vertex x, Vertex y, int v);
 void Set_Edge_Value(MGraph &G, int x, int y, int v);
 void Set_Edge_Value(const ALGraph& G, int x, int y, int v);
+
+void BFSTraverse(MGraph &G, const std::function<void(MGraph&, int)>&
+visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
+
+void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &
+visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
 
 
 

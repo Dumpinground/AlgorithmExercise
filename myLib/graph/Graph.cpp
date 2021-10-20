@@ -5,13 +5,38 @@
 #include "Graph.h"
 
 #include <iostream>
+#include <queue>
+#include <utility>
 
 using namespace std;
 
 basic::Edge::Edge(int x, int y) :
 x(x), y(y), value(1) {}
 
-MGraph::MGraph(vector<char> vertex, vector<vector<int>> edges) {
+Graph::Graph(vector<char> vertices, vector<vector<int>> edges, bool directionality, int offset) :
+        _vertices(std::move(vertices)), _edges(std::move(edges)), _directionality(directionality) {
+    if (offset) {
+        for (auto &e: _edges) {
+            e[0] += offset;
+            e[1] += offset;
+        }
+    }
+}
+
+const std::vector<char> &Graph::vertices() const {
+    return _vertices;
+}
+
+std::vector<std::vector<int>> Graph::edges() const {
+    auto edges = _edges;
+    if (_directionality)
+        for (auto e: _edges) {
+            edges.emplace_back(e[1], e[0]);
+        }
+    return edges;
+}
+
+void MGraph::Init(const vector<char> &vertex, const vector<vector<int>>& edges) {
     vexNum = vertex.size();
 
     for (int i = 0; i < vexNum; ++i) {
@@ -26,11 +51,18 @@ MGraph::MGraph(vector<char> vertex, vector<vector<int>> edges) {
     }
 }
 
+MGraph::MGraph(const vector<char> &vertex, const vector<vector<int>>& edges) {
+    Init(vertex, edges);
+}
+
+MGraph::MGraph(const Graph &graph) {
+    Init(graph.vertices(), graph.edges());
+}
+
 ArcNode::ArcNode(int vex, ArcNode *next, int w) :
 adjVex(vex), next(next), weight(w) {}
 
-ALGraph::ALGraph(std::vector<char> vertex, vector<vector<int>> edges) {
-
+void ALGraph::Init(const vector<char> &vertex, const vector<vector<int>>& edges) {
     vexNum = vertex.size();
 
     for (int i = 0; i < vexNum; ++i) {
@@ -43,6 +75,14 @@ ALGraph::ALGraph(std::vector<char> vertex, vector<vector<int>> edges) {
         basic::Edge edge(e[0], e[1]);
         append(edge.x, edge.y);
     }
+}
+
+ALGraph::ALGraph(const vector<char> &vertex, const vector<vector<int>>& edges) {
+    Init(vertex, edges);
+}
+
+ALGraph::ALGraph(const Graph &graph) {
+    Init(graph.vertices(), graph.edges());
 }
 
 void ALGraph::append(int x, int y) {
@@ -140,18 +180,8 @@ void DeleteVertex(MGraph &G, int x) {
 void DeleteVertex(ALGraph &G, int x) {
     G.invalid.insert(x);
     G.vertices[x].first = NULL;
-    ArcNode *p;
     for (int i = 0; i < G.vexNum; ++i) {
         RemoveEdge(G, i, x);
-//        p = G.vertices[i].first;
-//        while (p) {
-//            if (p->adjVex == x) {
-//                if (p->next)
-//                    p->adjVex = p->next->adjVex;
-//                p->next = p->next->next;
-//            }
-//            p = p->next;
-//        }
     }
 }
 
@@ -190,10 +220,10 @@ int FirstNeighbor(const MGraph& G, int x) {
         if (G.Edge[x][i])
             return i;
     }
-    for (int i = 0; i < G.vexNum; ++i) {
-        if (G.Edge[i][x])
-            return i;
-    }
+//    for (int i = 0; i < G.vexNum; ++i) {
+//        if (G.Edge[i][x])
+//            return i;
+//    }
     return -1;
 }
 
@@ -249,3 +279,69 @@ void Set_Edge_Value(const ALGraph& G, int x, int y, int v) {
         p->weight = v;
 }
 
+void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x)> &visit) {
+
+    queue<int> Q;
+
+    auto mark = [&](int x) {
+        visited[x] = true;
+        Q.push(x);
+    };
+
+    auto deQueue = [&Q]()->int {
+        int f = Q.front();
+        Q.pop();
+        return f;
+    };
+
+    visit(G, v);
+    mark(v);
+    while (!Q.empty()) {
+        v = deQueue();
+        for (int i = FirstNeighbor(G, v); i != -1; i = NextNeighbor(G, v, i)) {
+            if (!visited[i]) {
+                visit(G, i);
+                mark(i);
+            }
+        }
+    }
+
+}
+
+void BFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
+
+    bool visited[G.vexNum];
+    for (auto d : G.invalid) {
+        visited[d] = true;
+    }
+    for (int i = 0; i < G.vexNum; ++i) {
+        if (!visited[i])
+            BFS(G, i, visited, visit);
+    }
+}
+
+void DFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &, int)> &visit) {
+
+    auto mark = [&visited](int v) {
+        visited[v] = true;
+    };
+
+    visit(G, v);
+    mark(v);
+    for (int i = FirstNeighbor(G, v); i != -1; i = NextNeighbor(G, v, i)) {
+        if (!visited[i])
+            DFS(G, i, visited, visit);
+    }
+}
+
+void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
+
+    bool visited[G.vexNum];
+    for (auto d : G.invalid) {
+        visited[d] = true;
+    }
+    for (int i = 0; i < G.vexNum; ++i) {
+        if (!visited[i])
+            DFS(G, i, visited, visit);
+    }
+}
