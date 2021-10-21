@@ -8,25 +8,20 @@
 
 using namespace std;
 
-vector<vector<int>> edges = {
-        {0, 1}, {0, 2}, {0, 3},
-        {1, 0}, {1, 4}, {1, 5},
-        {2, 0}, {2, 4},
-        {3, 0}, {3, 5},
-        {4, 1}, {4, 2},
-        {5, 1}, {5, 3}
-};
-
-vector<vector<int>> arrows = {
-        {0, 1},
-        {2, 0},
-        {3, 0},
-        {4, 1}, {4, 2},
-        {5, 1}, {5, 3}
-};
-
 TEST(graph, testMGraph) {
-    MGraph graph({'A', 'B', 'C', 'D', 'E', 'F'}, arrows);
+    Graph g1 = {
+            {'A', 'B', 'C', 'D', 'E', 'F'},
+            {
+                    {0, 1}, {0, 2}, {0, 3},
+                    {1, 0}, {1, 4}, {1, 5},
+                    {2, 0}, {2, 4},
+                    {3, 0}, {3, 5},
+                    {4, 1}, {4, 2},
+                    {5, 1}, {5, 3}
+            }
+    };
+
+    MGraph graph(g1);
     cout << Adjacent(graph, 2, 3) << " " << Adjacent(graph, 4, 2) << endl;
     Neighbors(graph, 0);
     DeleteVertex(graph, 4);
@@ -37,7 +32,18 @@ TEST(graph, testMGraph) {
 }
 
 TEST(graph, testALGraph) {
-    ALGraph graph({'A', 'B', 'C', 'D', 'E', 'F'}, arrows);
+    Graph g2 = {
+            {'A', 'B', 'C', 'D', 'E', 'F'},
+            {
+                 {0, 1},
+                 {2, 0},
+                 {3, 0},
+                 {4, 1}, {4, 2},
+                 {5, 1}, {5, 3}
+            }
+    };
+
+    ALGraph graph(g2);
     cout << Adjacent(graph, 2, 3) << " " << Adjacent(graph, 4, 2) << endl;
     Neighbors(graph, 4);
     DeleteVertex(graph, 4);
@@ -63,7 +69,7 @@ Graph searchG1 = {
 
 TEST(graph, graphInit) {
     for (auto e : searchG1.edges()) {
-        printf("{%d, %d} ", e[0], e[1]);
+        printf("{%d, %d} ", e.x, e.y);
     }
 }
 
@@ -76,4 +82,34 @@ TEST(graph, testBFS) {
     MGraph graphM(searchG1);
     BFS_MinDistance(graphM, 1);
     BFS_MinDistance(graphM, 2);
+}
+
+TEST(graph, testDijkstra) {
+    Graph five = {
+            {'0', '1', '2', '3', '4'},
+            {
+                    {0, 1, 10},
+                    {0, 4, 5},
+                    {1, 2, 1},
+                    {1, 4, 2},
+                    {2, 3, 4},
+                    {3, 0, 7},
+                    {3, 2, 6},
+                    {4, 1, 3},
+                    {4, 2, 9},
+                    {4, 3, 2}
+            }
+    };
+
+    MGraph graph(five);
+    int v = 0;
+    auto path = Dijkstra(graph, v);
+    for (int i = 0; i < graph.vexNum; ++i) {
+        int j = i;
+        while (path[j] != Unreachable) {
+            cout << "v" << graph.Vex[j] << "<-";
+            j = path[j];
+        }
+        cout << "v" << graph.Vex[v] << endl;
+    }
 }

@@ -12,27 +12,30 @@
 #include <iostream>
 
 #define MaxVertexNum 100
-#define INFINITY INT_MAX
+#define Infinity INT_MAX
+#define Unreachable (-1)
 
 namespace basic {
     struct Edge {
         int x;
         int y;
-        int value;
+        int weight;
 
-        Edge(int x, int y);
+        Edge(int x, int y, int weight = 1);
+
+        Edge reverse();
     };
 }
 
 struct Graph {
     std::vector<char> _vertices;
-    std::vector<std::vector<int>> _edges;
+    std::vector<basic::Edge> _edges;
     bool _directionality;
 
-    Graph(std::vector<char> vertices, std::vector<std::vector<int>> edges, bool directionality = true, int offset = 0);
+    Graph(std::vector<char> vertices, std::vector<basic::Edge> edges, bool directionality = true, int offset = 0);
 
     const std::vector<char> &vertices() const;
-    std::vector<std::vector<int>> edges() const;
+    std::vector<basic::Edge> edges() const;
 };
 
 struct Vertex;
@@ -44,8 +47,7 @@ struct MGraph {
     std::set<int> invalid;
 
     MGraph() = default;
-    void Init(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
-    MGraph(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    void Init(const std::vector<char> &vertex, const std::vector<basic::Edge>& edges);
     MGraph(const Graph &graph);
 };
 
@@ -72,8 +74,7 @@ struct ALGraph {
     std::set<int> invalid;
 
     ALGraph() = default;
-    void Init(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
-    ALGraph(const std::vector<char> &vertex, const std::vector<std::vector<int>>& edges);
+    void Init(const std::vector<char> &vertex, const std::vector<basic::Edge>& edges);
     ALGraph(const Graph &graph);
 
     void append(int x, int y);
@@ -131,5 +132,7 @@ void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &
 visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
 
 std::vector<int> BFS_MinDistance(MGraph &G, int u);
+
+std::vector<int> Dijkstra(MGraph &G, int v);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H
