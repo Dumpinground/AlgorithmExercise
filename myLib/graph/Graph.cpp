@@ -347,9 +347,9 @@ void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
     }
 }
 
-void BFS_MinDistance(MGraph &G, int u) {
-
-    int d[G.vexNum], path[G.vexNum];
+vector<int> BFS_MinDistance(MGraph &G, int u) {
+    int d[G.vexNum];
+    vector<int> path(G.vexNum);
     for (int i = 0; i < G.vexNum; ++i) {
         d[i] = INFINITY;
         path[i] = -1;
@@ -378,4 +378,5 @@ void BFS_MinDistance(MGraph &G, int u) {
         cout << G.Vex[i] << ":  " << dis << " <- " << path[i] << endl;
     }
     cout << endl;
+    return path;
 }

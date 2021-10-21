@@ -73,15 +73,6 @@ TEST(graph, firstNeighbor) {
 }
 
 TEST(graph, testBFS) {
-    MGraph graph(searchG1);
-    bool visited[graph.vexNum];
-    BFS(graph, 1, visited);
-    cout << endl;
-    bool visited2[graph.vexNum];
-    BFS(graph, 2, visited2);
-}
-
-TEST(graph, testSearch) {
     MGraph graphM(searchG1);
     BFS_MinDistance(graphM, 1);
     BFS_MinDistance(graphM, 2);

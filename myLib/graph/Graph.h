@@ -130,6 +130,6 @@ visit = printVex);
 void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &
 visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
 
-void BFS_MinDistance(MGraph &G, int u);
+std::vector<int> BFS_MinDistance(MGraph &G, int u);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H
