@@ -119,12 +119,17 @@ void Set_Edge_Value(Graph G, Vertex x, Vertex y, int v);
 void Set_Edge_Value(MGraph &G, int x, int y, int v);
 void Set_Edge_Value(const ALGraph& G, int x, int y, int v);
 
-void BFSTraverse(MGraph &G, const std::function<void(MGraph&, int)>&
-visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
+void printVex(MGraph &g, int x, int from);
+
+void BFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &g, int x, int from)> &
+visit = printVex);
+
+void BFSTraverse(MGraph &G, const std::function<void(MGraph&, int, int)>&
+visit = printVex);
 
 void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &
 visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
 
-
+void BFS_MinDistance(MGraph &G, int u);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H

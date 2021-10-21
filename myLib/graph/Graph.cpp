@@ -29,9 +29,9 @@ const std::vector<char> &Graph::vertices() const {
 
 std::vector<std::vector<int>> Graph::edges() const {
     auto edges = _edges;
-    if (_directionality)
+    if (!_directionality)
         for (auto e: _edges) {
-            edges.emplace_back(e[1], e[0]);
+            edges.push_back( {e[1], e[0]} );
         }
     return edges;
 }
@@ -279,7 +279,13 @@ void Set_Edge_Value(const ALGraph& G, int x, int y, int v) {
         p->weight = v;
 }
 
-void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x)> &visit) {
+void printVex(MGraph &g, int x, int from) {
+    std::cout << g.Vex[x] << " ";
+}
+
+#define NoFrom (-1)
+
+void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x, int from)> &visit) {
 
     queue<int> Q;
 
@@ -288,19 +294,14 @@ void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x)
         Q.push(x);
     };
 
-    auto deQueue = [&Q]()->int {
-        int f = Q.front();
-        Q.pop();
-        return f;
-    };
-
-    visit(G, v);
+    visit(G, v, NoFrom);
     mark(v);
     while (!Q.empty()) {
-        v = deQueue();
+        v = Q.front();
+        Q.pop();
         for (int i = FirstNeighbor(G, v); i != -1; i = NextNeighbor(G, v, i)) {
             if (!visited[i]) {
-                visit(G, i);
+                visit(G, i, v);
                 mark(i);
             }
         }
@@ -308,7 +309,7 @@ void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x)
 
 }
 
-void BFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
+void BFSTraverse(MGraph &G, const function<void(MGraph &, int, int)> &visit) {
 
     bool visited[G.vexNum];
     for (auto d : G.invalid) {
@@ -344,4 +345,37 @@ void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
         if (!visited[i])
             DFS(G, i, visited, visit);
     }
+}
+
+void BFS_MinDistance(MGraph &G, int u) {
+
+    int d[G.vexNum], path[G.vexNum];
+    for (int i = 0; i < G.vexNum; ++i) {
+        d[i] = INFINITY;
+        path[i] = -1;
+    }
+
+    bool visited[G.vexNum];
+    for (int i = 0; i < G.vexNum; ++i) {
+        visited[i] = false;
+    }
+    for (auto deleted : G.invalid) {
+        visited[deleted] = true;
+    }
+
+    BFS(G, u, visited, [&](MGraph &g, int v, int from) {
+        if (from == NoFrom) {
+            d[v] = 0;
+        } else {
+            d[v] = d[from] + 1;
+            path[v] = from;
+        }
+    });
+
+    cout << "distance from " << u << endl;
+    for (int i = 0; i < G.vexNum; ++i) {
+        string dis = d[i] == INFINITY ? "∞" : to_string(d[i]);
+        cout << G.Vex[i] << ":  " << dis << " <- " << path[i] << endl;
+    }
+    cout << endl;
 }

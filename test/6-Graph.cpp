@@ -48,7 +48,7 @@ TEST(graph, testALGraph) {
 }
 
 Graph searchG1 = {
-        {'1', '2', '3', '4', '5', '6', '7', '8'},
+        {'0', '1', '2', '3', '4', '5', '6', '7', '8'},
         {
                 {1, 2}, {1, 5},
                 {2, 6},
@@ -58,13 +58,31 @@ Graph searchG1 = {
                 {7, 8}
         },
         false,
-        -1
+        0
 };
 
+TEST(graph, graphInit) {
+    for (auto e : searchG1.edges()) {
+        printf("{%d, %d} ", e[0], e[1]);
+    }
+}
+
+TEST(graph, firstNeighbor) {
+    MGraph graph(searchG1);
+    cout << FirstNeighbor(graph, 2) << endl;
+}
+
 TEST(graph, testBFS) {
-    MGraph graphM(searchG1);
-    Neighbors(graphM, 1);
-    BFSTraverse(graphM);
+    MGraph graph(searchG1);
+    bool visited[graph.vexNum];
+    BFS(graph, 1, visited);
     cout << endl;
-    DFSTraverse(graphM);
+    bool visited2[graph.vexNum];
+    BFS(graph, 2, visited2);
+}
+
+TEST(graph, testSearch) {
+    MGraph graphM(searchG1);
+    BFS_MinDistance(graphM, 1);
+    BFS_MinDistance(graphM, 2);
 }
