@@ -7,6 +7,7 @@
 #include <iostream>
 #include <queue>
 #include <iomanip>
+#include <stack>
 
 using namespace std;
 
@@ -99,6 +100,15 @@ int MGraph::getIndex(char v) {
 
 bool MGraph::EdgeExist(int x, int y) const {
     return Edge[x][y] && Edge[x][y] != Infinity;
+}
+
+int MGraph::inDegree(int y) {
+    int degree = 0;
+    for (int i = 0; i < vexNum; ++i) {
+        if (EdgeExist(i, y))
+            degree++;
+    }
+    return degree;
 }
 
 ArcNode::ArcNode(int vex, ArcNode *next, int w) :
@@ -554,3 +564,26 @@ vector<vector<int>> Floyd(MGraph &G) {
     return path;
 }
 
+bool TopSort(MGraph &G) {
+    stack<int> S;
+    int count = 0;
+    int indegree[G.vexNum], print[G.vexNum];
+
+    for (int v = 0; v < G.vexNum; ++v) {
+        indegree[v] = G.inDegree(v);
+        if (!indegree[v])
+            S.push(v);
+    }
+    while (!S.empty()) {
+        int t = S.top();
+        S.pop();
+        cout << " " << G.Vex[t];
+        print[count++] = t;
+        for (int i = FirstNeighbor(G, t); i != Unreachable; i = NextNeighbor(G, t, i)) {
+            if (!--indegree[i])
+                S.push(i);
+        }
+    }
+
+    return count == G.vexNum;
+}

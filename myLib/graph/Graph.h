@@ -56,6 +56,8 @@ struct MGraph {
     int getIndex(char v);
     bool EdgeExist(int x, int y) const;
 
+    int inDegree(int y);
+
     friend std::ostream &operator<<(std::ostream&, MGraph&);
 };
 
@@ -144,5 +146,7 @@ std::vector<int> BFS_MinDistance(MGraph &G, int u);
 std::vector<int> Dijkstra(MGraph &G, char vertex);
 
 std::vector<std::vector<int>> Floyd(MGraph &G);
+
+bool TopSort(MGraph &i);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H

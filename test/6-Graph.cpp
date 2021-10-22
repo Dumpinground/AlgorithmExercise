@@ -153,3 +153,37 @@ TEST(graph, testFloyd2) {
     MGraph graph(five);
     Floyd(graph);
 }
+
+TEST(graph, testInDegree) {
+    Graph five = {
+            {'0', '1', '2', '3', '4'},
+            {
+                {0, 1},
+                {1, 3},
+                {2, 3},
+                {2, 4},
+                {3, 4}
+            }
+    };
+
+    MGraph graph(five);
+    for (int i = 0; i < graph.vexNum; ++i) {
+        cout << graph.inDegree(i) << " ";
+    }
+}
+
+TEST(graph, testTopSort) {
+    Graph five = {
+            {'0', '1', '2', '3', '4'},
+            {
+                    {0, 1},
+                    {1, 3},
+                    {2, 3},
+                    {2, 4},
+                    {3, 4}
+            }
+    };
+
+    MGraph graph(five);
+    TopSort(graph);
+}
