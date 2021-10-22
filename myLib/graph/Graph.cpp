@@ -102,11 +102,18 @@ bool MGraph::EdgeExist(int x, int y) const {
     return Edge[x][y] && Edge[x][y] != Infinity;
 }
 
-int MGraph::inDegree(int y) {
+int MGraph::degree(int v, basic::degree type) const {
     int degree = 0;
     for (int i = 0; i < vexNum; ++i) {
-        if (EdgeExist(i, y))
-            degree++;
+        switch (type) {
+            case basic::in:
+                if (EdgeExist(i, v))
+                    degree++;
+                break;
+            case basic::out:
+                if (EdgeExist(v, i))
+                    degree++;
+        }
     }
     return degree;
 }
@@ -267,15 +274,18 @@ void RemoveEdge(ALGraph &G, int x, int y) {
         }
 }
 
-int FirstNeighbor(const MGraph& G, int x) {
+int FirstNeighbor(const MGraph& G, int x, basic::degree type) {
     for (int i = 0; i < G.vexNum; ++i) {
-        if (G.EdgeExist(x, i))
-            return i;
+        switch (type) {
+            case basic::out:
+                if (G.EdgeExist(x, i))
+                    return i;
+                break;
+            case basic::in:
+                if (G.EdgeExist(i, x))
+                    return i;
+        }
     }
-//    for (int i = 0; i < G.vexNum; ++i) {
-//        if (G.Edge[i][x])
-//            return i;
-//    }
     return Unreachable;
 }
 
@@ -293,10 +303,17 @@ int FirstNeighbor(const ALGraph& G, int x) {
     return Unreachable;
 }
 
-int NextNeighbor(const MGraph& G, int x, int y) {
+int NextNeighbor(const MGraph& G, int x, int y, basic::degree type) {
     for (int i = y + 1; i < G.vexNum; ++i) {
-        if (G.EdgeExist(x, i))
-            return i;
+        switch (type) {
+            case basic::out:
+                if (G.EdgeExist(x, i))
+                    return i;
+                break;
+            case basic::in:
+                if (G.EdgeExist(i, x))
+                    return i;
+        }
     }
     return Unreachable;
 }
@@ -331,8 +348,12 @@ void Set_Edge_Value(const ALGraph& G, int x, int y, int v) {
         p->weight = v;
 }
 
-void printVex(MGraph &g, int x, int from) {
+void printVex(MGraph &g, int x) {
     std::cout << g.Vex[x] << " ";
+}
+
+void printVexFrom(MGraph &g, int x, int from) {
+    printVex(g, x);
 }
 
 void BFS(MGraph &G, int v, bool visited[], const function<void(MGraph &g, int x, int from)> &visit) {
@@ -371,7 +392,7 @@ void BFSTraverse(MGraph &G, const function<void(MGraph &, int, int)> &visit) {
     }
 }
 
-void DFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &, int)> &visit) {
+void DFS(MGraph &G, int v, bool visited[], const function<void(MGraph &, int)> &visit, const function<void(MGraph &, int)> &notVisit, const function<void(MGraph &, int)> &final) {
 
     auto mark = [&visited](int v) {
         visited[v] = true;
@@ -381,11 +402,15 @@ void DFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &, in
     mark(v);
     for (int i = FirstNeighbor(G, v); i != Unreachable; i = NextNeighbor(G, v, i)) {
         if (!visited[i])
-            DFS(G, i, visited, visit);
+            DFS(G, i, visited, visit, notVisit, final);
+        else
+            notVisit(G, i);
     }
+
+    final(G, v);
 }
 
-void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
+void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit, const function<void(MGraph &, int)> &notVisit, const std::function<void(MGraph&, int)> &final) {
 
     bool visited[G.vexNum];
     for (auto d : G.invalid) {
@@ -393,7 +418,7 @@ void DFSTraverse(MGraph &G, const function<void(MGraph &, int)> &visit) {
     }
     for (int i = 0; i < G.vexNum; ++i) {
         if (!visited[i])
-            DFS(G, i, visited, visit);
+            DFS(G, i, visited, visit, notVisit, final);
     }
 }
 
@@ -564,26 +589,57 @@ vector<vector<int>> Floyd(MGraph &G) {
     return path;
 }
 
-bool TopSort(MGraph &G) {
+bool TopSort(MGraph &G, bool reverse) {
+    basic::degree type = reverse ? basic::out : basic::in;
     stack<int> S;
     int count = 0;
-    int indegree[G.vexNum], print[G.vexNum];
+    int degree[G.vexNum], print[G.vexNum];
 
     for (int v = 0; v < G.vexNum; ++v) {
-        indegree[v] = G.inDegree(v);
-        if (!indegree[v])
+        degree[v] = G.degree(v, type);
+        if (!degree[v])
             S.push(v);
     }
+
+    type = reverse ? basic::in : basic::out;
+
     while (!S.empty()) {
         int t = S.top();
         S.pop();
         cout << " " << G.Vex[t];
         print[count++] = t;
-        for (int i = FirstNeighbor(G, t); i != Unreachable; i = NextNeighbor(G, t, i)) {
-            if (!--indegree[i])
+        for (int i = FirstNeighbor(G, t, type); i != Unreachable; i = NextNeighbor(G, t, i, type)) {
+            if (!--degree[i])
                 S.push(i);
         }
     }
+    cout << endl;
 
     return count == G.vexNum;
+}
+
+bool TopSortDFS(MGraph &G, bool reverse) {
+    bool tag[G.vexNum], result = true;
+    char print[G.vexNum];
+
+    DFSTraverse(G, [&tag](MGraph &g, int v){
+        tag[v] = true;
+        }, [&tag, &result](MGraph &g, int v){
+        if (tag[v])
+            result = false;
+        }, [&tag, &print](MGraph &g, int v){
+        print[v] = g.Vex[v];
+        tag[v] = false;
+    });
+
+    for (int i = 0; i < G.vexNum; ++i) {
+        if (reverse)
+            cout << G.Vex[i];
+        else
+            cout << G.Vex[G.vexNum - i - 1];
+        cout << " ";
+    }
+
+    cout << endl;
+    return result;
 }

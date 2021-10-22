@@ -26,6 +26,8 @@ namespace basic {
         Edge reverse();
     };
 
+    enum degree { in, out };
+
     std::string form(int i);
 }
 
@@ -56,7 +58,7 @@ struct MGraph {
     int getIndex(char v);
     bool EdgeExist(int x, int y) const;
 
-    int inDegree(int y);
+    int degree(int v, basic::degree d) const;
 
     friend std::ostream &operator<<(std::ostream&, MGraph&);
 };
@@ -115,11 +117,11 @@ void RemoveEdge(MGraph &G, int x, int y);
 void RemoveEdge(ALGraph &G, int x, int y);
 
 int FirstNeighbor(Graph G, Vertex x);
-int FirstNeighbor(const MGraph& G, int x);
+int FirstNeighbor(const MGraph& G, int x, basic::degree type = basic::out);
 int FirstNeighbor(const ALGraph& G, int x);
 
 int NextNeighbor(Graph G, Vertex x, Vertex y);
-int NextNeighbor(const MGraph& G, int x, int y);
+int NextNeighbor(const MGraph& G, int x, int y, basic::degree type = basic::out);
 int NextNeighbor(const ALGraph& G, int x, int y);
 
 int Get_Edge_Value(Graph G, Vertex x, Vertex y);
@@ -130,16 +132,18 @@ void Set_Edge_Value(Graph G, Vertex x, Vertex y, int v);
 void Set_Edge_Value(MGraph &G, int x, int y, int v);
 void Set_Edge_Value(const ALGraph& G, int x, int y, int v);
 
-void printVex(MGraph &g, int x, int from);
+void printVex(MGraph &g, int x);
+void printVexFrom(MGraph &g, int x, int from);
 
 void BFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &g, int x, int from)> &
-visit = printVex);
+visit = printVexFrom);
 
 void BFSTraverse(MGraph &G, const std::function<void(MGraph&, int, int)>&
-visit = printVex);
+visit = printVexFrom);
 
-void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &
-visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
+void DFS(MGraph &G, int v, bool visited[], const std::function<void(MGraph &, int)> &visit = printVex, const std::function<void(MGraph &, int)> &notVisit = {}, const std::function<void(MGraph &, int)> &final = {});
+
+void DFSTraverse(MGraph &G, const std::function<void(MGraph&, int)> &visit = printVex, const std::function<void(MGraph &, int)> &notVisit = {}, const std::function<void(MGraph&, int)> &final = {});
 
 std::vector<int> BFS_MinDistance(MGraph &G, int u);
 
@@ -147,6 +151,8 @@ std::vector<int> Dijkstra(MGraph &G, char vertex);
 
 std::vector<std::vector<int>> Floyd(MGraph &G);
 
-bool TopSort(MGraph &i);
+bool TopSort(MGraph &G, bool reverse = false);
+
+bool TopSortDFS(MGraph &G, bool reverse = false);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H

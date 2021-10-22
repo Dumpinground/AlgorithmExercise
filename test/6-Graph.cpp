@@ -154,7 +154,7 @@ TEST(graph, testFloyd2) {
     Floyd(graph);
 }
 
-TEST(graph, testInDegree) {
+TEST(graph, testDegree) {
     Graph five = {
             {'0', '1', '2', '3', '4'},
             {
@@ -168,22 +168,30 @@ TEST(graph, testInDegree) {
 
     MGraph graph(five);
     for (int i = 0; i < graph.vexNum; ++i) {
-        cout << graph.inDegree(i) << " ";
+        cout << graph.degree(i, basic::in) << " ";
+        cout << graph.degree(i, basic::out) << endl;
     }
 }
 
-TEST(graph, testTopSort) {
-    Graph five = {
-            {'0', '1', '2', '3', '4'},
-            {
-                    {0, 1},
-                    {1, 3},
-                    {2, 3},
-                    {2, 4},
-                    {3, 4}
-            }
-    };
+Graph AOV = {
+    {'0', '1', '2', '3', '4'},
+    {
+            {0, 1},
+            {1, 3},
+            {2, 3},
+            {2, 4},
+            {3, 4}
+    }
+};
 
-    MGraph graph(five);
-    TopSort(graph);
+TEST(graph, testTopSort) {
+    MGraph graph(AOV);
+    cout << TopSort(graph, false) << endl;
+    cout << TopSort(graph, true) << endl;
+}
+
+TEST(graph, testTopSort2) {
+    MGraph graph(AOV);
+    cout << TopSortDFS(graph, false) << endl;
+    cout << TopSortDFS(graph, true) << endl;
 }
