@@ -190,7 +190,7 @@ TEST(graph, testTopSort) {
     cout << TopSort(graph, true) << endl;
 }
 
-TEST(graph, testTopSort2) {
+TEST(graph, testTopSortDFS) {
     MGraph graph(AOV);
     cout << TopSortDFS(graph, false) << endl;
     cout << TopSortDFS(graph, true) << endl;
