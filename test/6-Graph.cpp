@@ -102,14 +102,54 @@ TEST(graph, testDijkstra) {
     };
 
     MGraph graph(five);
-    int v = 0;
-    auto path = Dijkstra(graph, v);
-    for (int i = 0; i < graph.vexNum; ++i) {
-        int j = i;
-        while (path[j] != Unreachable) {
-            cout << "v" << graph.Vex[j] << "<-";
-            j = path[j];
-        }
-        cout << "v" << graph.Vex[v] << endl;
+    Dijkstra(graph, '0');
+}
+
+TEST(graph, testIndex) {
+    MGraph graph({
+         {'0', '1', '2'},
+         {
+          {0, 1, 6},
+          {0, 2, 13},
+          {1, 0, 10},
+          {1, 2, 4},
+          {2, 0, 5}
+         }
+    });
+
+    for (short i = 0; i < 3; ++i) {
+        cout << graph.getIndex(('0' + i)) << " ";
     }
+}
+
+TEST(graph, testFloyd) {
+    Graph three = {
+            {'0', '1', '2'},
+            {
+                    {0, 1, 6},
+                    {0, 2, 13},
+                    {1, 0, 10},
+                    {1, 2, 4},
+                    {2, 0, 5}
+            }
+    };
+    MGraph graph(three);
+    Floyd(graph);
+}
+
+TEST(graph, testFloyd2) {
+    Graph five = {
+            {'0', '1', '2', '3', '4'},
+            {
+                    {0, 2, 1},
+                    {0, 4, 10},
+                    {1, 3, 1},
+                    {1, 4, 5},
+                    {2, 1, 1},
+                    {2, 4, 7},
+                    {3, 4, 1},
+            }
+    };
+    MGraph graph(five);
+    Floyd(graph);
 }

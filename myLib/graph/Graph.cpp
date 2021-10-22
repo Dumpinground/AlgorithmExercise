@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <queue>
+#include <iomanip>
 
 using namespace std;
 
@@ -14,6 +15,10 @@ basic::Edge::Edge(int x, int y, int weight) :
 
 basic::Edge basic::Edge::reverse() {
     return {y, x, weight};
+}
+
+string basic::form(int i) {
+    return i == Infinity ? "~" : to_string(i);
 }
 
 Graph::Graph(vector<char> vertices, vector<basic::Edge> edges, bool directionality, int offset) :
@@ -48,6 +53,10 @@ void MGraph::Init(const vector<char> &vertex, const vector<basic::Edge>& edges) 
 
     arcNum = edges.size();
 
+    for (int i = 0; i < MaxVertexNum; ++i)
+        for (int j = 0; j < MaxVertexNum; ++j)
+            Edge[i][j] = i == j ? 0 : Infinity;
+
     for (auto edge : edges) {
         Edge[edge.x][edge.y] = edge.weight;
     }
@@ -55,6 +64,41 @@ void MGraph::Init(const vector<char> &vertex, const vector<basic::Edge>& edges) 
 
 MGraph::MGraph(const Graph &graph) {
     Init(graph.vertices(), graph.edges());
+}
+
+std::ostream &operator<<(ostream &out, MGraph &G) {
+    int space = 5;
+
+    out << setw(space) << "";
+    for (int i = 0; i < G.vexNum; ++i) {
+        out << setw(space) << (G.invalid.find(i) != G.invalid.end() ? 'X' : G.Vex[i]);
+    }
+    out << endl;
+    for (int i = 0; i < G.vexNum; ++i) {
+        out << setw(space) << (G.invalid.find(i) != G.invalid.end() ? 'X' : G.Vex[i]);
+        for (int j = 0; j < G.vexNum; ++j) {
+            out << setw(space) << basic::form(G.Edge[i][j]);
+        }
+        out << endl;
+    }
+    return out;
+}
+
+void MGraph::addVertex(char v, int i) {
+    Vex[i] = v;
+    Edge[i][i] = 0;
+}
+
+int MGraph::getIndex(char v) {
+    for (int i = 0; i < vexNum; ++i) {
+        if (Vex[i] == v && invalid.find(i) == invalid.end())
+            return i;
+    }
+    return Unreachable;
+}
+
+bool MGraph::EdgeExist(int x, int y) const {
+    return Edge[x][y] && Edge[x][y] != Infinity;
 }
 
 ArcNode::ArcNode(int vex, ArcNode *next, int w) :
@@ -142,12 +186,12 @@ void Neighbors(ALGraph &G, int x) {
     cout << endl;
 }
 
-void InsertVertex(MGraph &G, char x) {
-    if (G.invalid.empty())
-        G.Vex[G.vexNum++] = x;
-    else {
+void InsertVertex(MGraph &G, char v) {
+    if (G.invalid.empty()) {
+        G.addVertex(v, G.vexNum++);
+    } else {
         auto it = G.invalid.begin();
-        G.Vex[*it] = x;
+        G.addVertex(v, *it);
         G.invalid.erase(it);
     }
 }
@@ -162,11 +206,16 @@ void InsertVertex(ALGraph &G, char x) {
     }
 }
 
-void DeleteVertex(MGraph &G, int x) {
+void DeleteVertex(MGraph &G, char v) {
+
+    int x = G.getIndex(v);
+    if (x == Unreachable)
+        return;
+
     G.invalid.insert(x);
     for (int i = 0; i < G.vexNum; ++i) {
-        G.Edge[x][i] = 0;
-        G.Edge[i][x] = 0;
+        G.Edge[x][i] = Infinity;
+        G.Edge[i][x] = Infinity;
     }
 }
 
@@ -187,7 +236,7 @@ void AddEdge(ALGraph &G, int x, int y) {
 }
 
 void RemoveEdge(MGraph &G, int x, int y) {
-    G.Edge[x][y] = 0;
+    G.Edge[x][y] = Infinity;
 }
 
 void RemoveEdge(ALGraph &G, int x, int y) {
@@ -210,14 +259,14 @@ void RemoveEdge(ALGraph &G, int x, int y) {
 
 int FirstNeighbor(const MGraph& G, int x) {
     for (int i = 0; i < G.vexNum; ++i) {
-        if (G.Edge[x][i])
+        if (G.EdgeExist(x, i))
             return i;
     }
 //    for (int i = 0; i < G.vexNum; ++i) {
 //        if (G.Edge[i][x])
 //            return i;
 //    }
-    return -1;
+    return Unreachable;
 }
 
 int FirstNeighbor(const ALGraph& G, int x) {
@@ -231,12 +280,12 @@ int FirstNeighbor(const ALGraph& G, int x) {
             p = p->next;
         }
     }
-    return -1;
+    return Unreachable;
 }
 
 int NextNeighbor(const MGraph& G, int x, int y) {
     for (int i = y + 1; i < G.vexNum; ++i) {
-        if (G.Edge[x][i])
+        if (G.EdgeExist(x, i))
             return i;
     }
     return Unreachable;
@@ -365,14 +414,63 @@ vector<int> BFS_MinDistance(MGraph &G, int u) {
 
     cout << "distance from " << u << endl;
     for (int i = 0; i < G.vexNum; ++i) {
-        string dis = d[i] == Infinity ? "∞" : to_string(d[i]);
-        cout << G.Vex[i] << ":  " << dis << " <- " << path[i] << endl;
+        cout << G.Vex[i] << ":  " << basic::form(d[i]) << " <- " << path[i] << endl;
     }
     cout << endl;
     return path;
 }
 
-vector<int> Dijkstra(MGraph &G, int v) {
+void findPath(MGraph &G, char v, const vector<int> &path, const vector<int> &dist) {
+    cout << "path:" << endl;
+
+    for (int i = 0; i < G.vexNum; ++i) {
+        int j = i;
+        while (path[j] != Unreachable) {
+            cout << "v" << G.Vex[j] << "<-";
+            j = path[j];
+        }
+
+        cout << "v" << v << " : " + basic::form(dist[i]) << endl;
+    }
+}
+
+void findPath(MGraph &G, const vector<vector<int>> &path, const vector<vector<int>> &dist) {
+
+    auto vex = [&](int v)->string {
+        return new char[2]{'v', G.Vex[v]};
+    };
+
+    cout << "path:" << endl;
+
+    for (int i = 0; i < G.vexNum; ++i) {
+        for (int j = 0; j < G.vexNum; ++j) {
+            cout << setw(3) << path[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    function<string(int, int)> drawPath;
+    drawPath = [&](int start, int stop)->string {
+        int t = path[start][stop];
+        if (t == Unreachable)
+            return vex(start) + "->" + vex(stop);
+        else
+            return drawPath(start, t) + " " + drawPath(t, stop);
+    };
+
+    int v = 0;
+    cout << vex(v) << ":" << endl;
+    for (int stop = 0; stop < G.vexNum; ++stop) {
+        if (dist[v][stop] != Infinity)
+            cout << drawPath(v, stop) << " " << dist[v][stop] << endl;
+    }
+}
+
+vector<int> Dijkstra(MGraph &G, char vertex) {
+
+    int v = G.getIndex(vertex);
+
     vector<bool> final(G.vexNum, false);
     vector<int> dist(G.vexNum, Infinity), path(G.vexNum, Unreachable);
 
@@ -411,12 +509,48 @@ vector<int> Dijkstra(MGraph &G, int v) {
 
     }
 
-    cout << "distance:" << endl;
-    for (int i = 0; i < G.vexNum; ++i) {
-        string d = dist[i] == Infinity ? "∞" : to_string(dist[i]);
-        cout << "  v" << G.Vex[i] << ": " + d;
-    }
-    cout << endl;
+    findPath(G, vertex, path, dist);
 
     return path;
 }
+
+vector<vector<int>> Floyd(MGraph &G) {
+    vector<vector<int>> dist(G.vexNum, vector<int>(G.vexNum));
+    for (int i = 0; i < G.vexNum; ++i) {
+        for (int j = 0; j < G.vexNum; ++j) {
+            dist[i][j] = G.Edge[i][j];
+        }
+    }
+    
+    auto distPrint = [&](bool on = true) {
+        if (!on)
+            return;
+        cout << endl;
+        for (int i = 0; i < G.vexNum; ++i) {
+            for (int j = 0; j < G.vexNum; ++j) {
+                cout << basic::form(dist[i][j]) << "  ";
+            }
+            cout << endl;
+        }
+    };
+    
+    vector<vector<int>> path(G.vexNum, vector<int>(G.vexNum, Unreachable));
+    distPrint(false);
+    for (int transit = 0; transit < G.vexNum; ++transit)
+        for (int start = 0; start < G.vexNum; ++start)
+            for (int stop = 0; stop < G.vexNum; ++stop) {
+                int &direct = dist[start][stop];
+                int curve = dist[start][transit] + dist[transit][stop];
+                if (curve > 0 && direct > curve) {
+                    direct = curve;
+                    path[start][stop] = transit;
+                    distPrint(false);
+                }
+            }
+
+
+    findPath(G, path, dist);
+    
+    return path;
+}
+

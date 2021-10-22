@@ -25,6 +25,8 @@ namespace basic {
 
         Edge reverse();
     };
+
+    std::string form(int i);
 }
 
 struct Graph {
@@ -49,6 +51,12 @@ struct MGraph {
     MGraph() = default;
     void Init(const std::vector<char> &vertex, const std::vector<basic::Edge>& edges);
     MGraph(const Graph &graph);
+
+    void addVertex(char v, int i);
+    int getIndex(char v);
+    bool EdgeExist(int x, int y) const;
+
+    friend std::ostream &operator<<(std::ostream&, MGraph&);
 };
 
 typedef char VertexType;
@@ -89,11 +97,11 @@ void Neighbors(MGraph &G, int x);
 void Neighbors(ALGraph &G, int x);
 
 void InsertVertex(Graph G, char x);
-void InsertVertex(MGraph &G, char x);
+void InsertVertex(MGraph &G, char v);
 void InsertVertex(ALGraph &G, char x);
 
 void DeleteVertex(Graph G, Vertex x);
-void DeleteVertex(MGraph &G, int x);
+void DeleteVertex(MGraph &G, char v);
 void DeleteVertex(ALGraph &G, int x);
 
 bool AddEdge(Graph G, Vertex x, Vertex y);
@@ -133,6 +141,8 @@ visit = [](MGraph &g, int x) { std::cout << g.Vex[x] << " "; });
 
 std::vector<int> BFS_MinDistance(MGraph &G, int u);
 
-std::vector<int> Dijkstra(MGraph &G, int v);
+std::vector<int> Dijkstra(MGraph &G, char vertex);
+
+std::vector<std::vector<int>> Floyd(MGraph &G);
 
 #endif //ALGORITHMEXERCISE_GRAPH_H
