@@ -48,6 +48,12 @@ add_executable(
         myLib/graph/Graph.h
         myLib/graph/Graph.cpp
         test/6-Graph.cpp
+        myLib/search/Search.h
+        myLib/search/Search.cpp
+        test/7-Search.cpp
+        myLib/sort/Sort.h
+        myLib/sort/Sort.cpp
+        test/8-Sort.cpp
 )
 
 include(GoogleTest)
