@@ -13,5 +13,10 @@ TEST(sort, 0) {
     int n = 8;
     int a[] = {6, 5, 4, 3, 2, 1, 0, -1};
     ShellSort(a, 8);
-    printArray(a, n);
+    int b[9];
+    for (int i = 0; i < 8; ++i) {
+        b[i + 1] = a[i];
+    }
+    ShellSort2(b, 8);
+    printArray(b, n, 1);
 }

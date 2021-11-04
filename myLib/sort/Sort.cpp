@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void printArray(int a[], int n) {
-    for (int i = 0; i < n; ++i) {
+void printArray(int a[], int n, int offset) {
+    for (int i = 0 + offset; i < n + offset; ++i) {
         cout << " " << a[i];
     }
     cout << endl;
@@ -65,6 +65,22 @@ void ShellSort(int A[], int n) {
                 }
             }
 
+        }
+    }
+}
+
+void ShellSort2(int A[], int n) {
+    
+    int d, i, j;
+    for (d = n / 2; d >= 1; d /= 2) {
+        for (i = d + 1; i <= n; ++i) {
+            if (A[i] < A[i - d]) {
+                A[0] = A[i];
+                for (j = i - d; j > 0 && A[0] < A[j]; j -= d) {
+                    A[j + d] = A[j];
+                }
+                A[i + d] = A[0];
+            }
         }
     }
 }
