@@ -48,7 +48,8 @@ TEST(sort, testShellSort) {
     printArray(b, A.n, 1);
 }
 
-void testSort(const function<void(int a[], int n, order type)>& sort, Array a = C, order t = asc) {
+void testSort(const function<void(int a[], int n, order type)>& sort,
+              Array a = C, order t = asc) {
     sort(a.data, a.n, t);
     cout << a;
 }
@@ -68,4 +69,5 @@ TEST(sort, testSelectSort) {
 TEST(sort, testHeadSort) {
     testSort(BuildHeap, A, asc);
     testSort(BuildHeap, B, desc);
+    testSort(BuildHeap, C);
 }

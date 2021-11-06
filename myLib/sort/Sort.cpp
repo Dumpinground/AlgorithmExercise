@@ -168,3 +168,7 @@ void BuildHeap(int *A, int len, order type) {
         HeadAdjust(A, i, len - 1, type);
     }
 }
+
+void HeapSort(int *A, int n, order type) {
+
+}
