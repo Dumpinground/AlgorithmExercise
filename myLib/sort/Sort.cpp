@@ -84,3 +84,85 @@ void ShellSort2(int A[], int n) {
         }
     }
 }
+
+void BubbleSort(int *A, int n) {
+    for (int i = 0; i < n - 1; ++i) {
+        bool swapped = false;
+        for (int j = n - 1; j > i; --j) {
+            if (A[j] < A[j - 1]) {
+                swap(A[j], A[j - 1]);
+                swapped = true;
+            }
+        }
+        if (!swapped)
+            return;
+    }
+}
+
+int Partition(int A[], int low, int high) {
+
+    int pivot = A[low];
+    auto finish = [&] ()->bool { return low == high; };
+    while (!finish()) {
+        while (!finish() && pivot < A[high]) high--;
+        A[low] = A[high];
+        while (!finish() && A[low] < pivot) low++;
+        A[high] = A[low];
+    }
+    A[low] = pivot;
+    return low;
+}
+
+void QuickSort(int A[], int low, int high) {
+
+    if (low < high) {
+        int pivotPos = Partition(A, low, high);
+        QuickSort(A, low, pivotPos - 1);
+        QuickSort(A, pivotPos + 1, high);
+    }
+}
+
+void QuickSort(int *A, int n) {
+    QuickSort(A, 0, n - 1);
+}
+
+void SelectSort(int *A, int n) {
+    int min;
+    for (int i = 0; i < n; ++i) {
+        min = i;
+        for (int j = i; j < n; ++j) {
+            if (A[j] < A[min])
+                min = j;
+        }
+        swap(A[i], A[min]);
+    }
+}
+
+void HeadAdjust(int A[], int k, int len, heap::order type) {
+    int temp = A[k];
+    auto orderly = [&type] (int a, int b)->bool {
+        switch (type) {
+            case heap::max:
+                return a >= b;
+            case heap::min:
+                return a <= b;
+        }
+    };
+    for (int i = 2 * len; i < len; i *= 2) {
+        if (i < len - 1 && !orderly(A[i], A[i + 1]))
+            i = i + 1;
+        if (orderly(temp, A[i]))
+            break;
+        else {
+            A[k] = A[i];
+            k = i;
+        }
+    }
+    A[k] = temp;
+}
+
+void BuildHeap(int *A, int len, heap::order type) {
+    for (int i = len / 2; i >= 0; --i) {
+        HeadAdjust(A, i, len - 1, type);
+    }
+}
