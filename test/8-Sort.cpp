@@ -33,6 +33,9 @@ Array A = {
 }, B = {
         new int[8] {-1, 0, 1, 2, 3, 4, 5, 6},
         8
+}, C = {
+        new int[9]{-1, 0, 3, -2, 6, 4, 1, 5, 2},
+        9
 };
 
 TEST(sort, testShellSort) {
@@ -45,30 +48,24 @@ TEST(sort, testShellSort) {
     printArray(b, A.n, 1);
 }
 
-void testResult(Array a, const function<void(int a[], int n)>& sort) {
-    sort(a.data, a.n);
+void testSort(const function<void(int a[], int n, order type)>& sort, Array a = C, order t = asc) {
+    sort(a.data, a.n, t);
     cout << a;
 }
 
 TEST(sort, testBubbleSort) {
-    testResult(A, BubbleSort);
+    testSort(BubbleSort);
 }
 
 TEST(sort, testQuickSort) {
-    testResult(A, QuickSort);
+    testSort(QuickSort);
 }
 
 TEST(sort, testSelectSort) {
-    testResult(A, SelectSort);
+    testSort(SelectSort);
 }
 
 TEST(sort, testHeadSort) {
-    auto BuildMaxHeap = [] (int A[], int n) {
-        BuildHeap(A, n, heap::max);
-    };
-    auto BuildMinHeap = [] (int A[], int n) {
-        BuildHeap(A, n, heap::min);
-    };
-    testResult(B, BuildMaxHeap);
-    testResult(A, BuildMinHeap);
+    testSort(BuildHeap, A, asc);
+    testSort(BuildHeap, B, desc);
 }

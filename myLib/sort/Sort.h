@@ -7,11 +7,11 @@
 
 #include <ostream>
 
-namespace heap {
-    enum order {
-        max, min
-    };
-}
+enum order {
+    asc, desc
+};
+
+bool orderly(int a, int b, order type = asc);
 
 void printArray(int a[], int n, int offset = 0);
 
@@ -21,12 +21,12 @@ void InsertSortBinary(int A[], int n);
 void ShellSort(int A[], int n);
 void ShellSort2(int A[], int n);
 
-void BubbleSort(int A[], int n);
+void BubbleSort(int A[], int n, order type = asc);
 
-void QuickSort(int A[], int n);
+void QuickSort(int A[], int n, order type = asc);
 
-void SelectSort(int A[], int n);
+void SelectSort(int A[], int n, order type = asc);
 
-void BuildHeap(int A[], int n, heap::order type);
+void BuildHeap(int A[], int n, order type = asc);
 
 #endif //ALGORITHMEXERCISE_SORT_H
