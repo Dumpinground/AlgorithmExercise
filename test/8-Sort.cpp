@@ -66,8 +66,13 @@ TEST(sort, testSelectSort) {
     testSort(SelectSort);
 }
 
-TEST(sort, testHeadSort) {
+TEST(sort, testHeap) {
     testSort(BuildHeap, A, asc);
     testSort(BuildHeap, B, desc);
-    testSort(BuildHeap, C);
+    testSort(BuildHeap, C, desc);
+}
+
+TEST(sort, testHeapSort) {
+    testSort(HeapSort);
+    testSort(HeapSort, C, desc);
 }

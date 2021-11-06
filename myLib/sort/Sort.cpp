@@ -148,9 +148,10 @@ void SelectSort(int *A, int n, order type) {
     }
 }
 
-void HeadAdjust(int A[], int k, int len, order type) {
+void HeapAdjust(int A[], int k, int len, order type) {
     int temp = A[k];
-    for (int i = 2 * len; i < len; i *= 2) {
+
+    for (int i = 2 * k + 1; i < len; i *= 2) {
         if (i < len - 1 && !orderly(A[i], A[i + 1], type))
             i = i + 1;
         if (orderly(temp, A[i], type))
@@ -165,10 +166,15 @@ void HeadAdjust(int A[], int k, int len, order type) {
 
 void BuildHeap(int *A, int len, order type) {
     for (int i = len / 2; i >= 0; --i) {
-        HeadAdjust(A, i, len - 1, type);
+        HeapAdjust(A, i, len, type);
     }
 }
 
 void HeapSort(int *A, int n, order type) {
-
+    type = type == asc ? desc : asc;
+    BuildHeap(A, n, type);
+    for (int i = n - 1; i >= 0; --i) {
+        swap(A[0], A[i]);
+        HeapAdjust(A, 0, i, type);
+    }
 }
