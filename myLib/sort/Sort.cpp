@@ -4,6 +4,7 @@
 
 #include "Sort.h"
 #include <iostream>
+#include <functional>
 
 using namespace std;
 
@@ -177,4 +178,38 @@ void HeapSort(int *A, int n, order type) {
         swap(A[0], A[i]);
         HeapAdjust(A, 0, i, type);
     }
+}
+
+void MergeSort(int A[], int low, int high, const function<void(int A[], int low, int mid, int high)> &Merge) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+        MergeSort(A, low, mid, Merge);
+        MergeSort(A, mid + 1, high, Merge);
+        Merge(A, low, mid, high);
+    }
+}
+
+void MergeSort(int *A, int n, order type) {
+
+    int B[n];
+    function<void(int A[], int low, int mid, int high)> Merge;
+
+    Merge = [&B, &type] (int A[], int low, int mid, int high) {
+        int i, j, k;
+        for (k = low; k <= high; k++) {
+            B[k] = A[k];
+        }
+        for (i = low, j = mid + 1, k = i; i <= mid && j <= high; k++) {
+            if (orderly(B[i], B[j], type))
+                A[k] = B[i++];
+            else
+                A[k] = B[j++];
+        }
+        while (i <= mid)
+            A[k++] = B[i++];
+        while (j <= high)
+            A[k++] = B[j++];
+    };
+
+    MergeSort(A, 0, n - 1, Merge);
 }

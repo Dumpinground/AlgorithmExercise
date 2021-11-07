@@ -31,4 +31,6 @@ void BuildHeap(int A[], int n, order type = asc);
 
 void HeapSort(int A[], int n, order type = asc);
 
+void MergeSort(int A[], int n, order type = asc);
+
 #endif //ALGORITHMEXERCISE_SORT_H

@@ -76,3 +76,8 @@ TEST(sort, testHeapSort) {
     testSort(HeapSort);
     testSort(HeapSort, C, desc);
 }
+
+TEST(sort, testMergeSort) {
+    testSort(MergeSort);
+    testSort(MergeSort, C, desc);
+}
