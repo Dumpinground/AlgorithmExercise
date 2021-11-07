@@ -181,6 +181,7 @@ void HeapSort(int *A, int n, order type) {
 }
 
 void MergeSort(int A[], int low, int high, const function<void(int A[], int low, int mid, int high)> &Merge) {
+
     if (low < high) {
         int mid = (low + high) / 2;
         MergeSort(A, low, mid, Merge);
