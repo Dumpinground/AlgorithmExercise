@@ -15,6 +15,17 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+file(Glob test_SRC
+        test/*.cpp
+)
+
+file(Glob myLib_SRC
+        myLib/*.h
+        myLib/*.cpp
+        myLib/*/*.h
+        myLib/*/*.cpp
+)
+
 add_executable(
         AlgorithmExercise
         main.cpp
