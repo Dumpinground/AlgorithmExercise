@@ -5,6 +5,8 @@
 #include "Sort.h"
 #include <iostream>
 #include <functional>
+#include <valarray>
+#include <queue>
 
 using namespace std;
 
@@ -213,4 +215,60 @@ void MergeSort(int *A, int n, order type) {
     };
 
     MergeSort(A, 0, n - 1, Merge);
+}
+
+int bitLimit(const int numbers[], int n) {
+    int b = 1;
+    for (int i = 0; i < n; i++) {
+        while (numbers[i] / (int)pow(10, b))
+            b++;
+    }
+    return b;
+}
+
+int bitLimit(const LinkedList &L) {
+    int b = 1;
+    LNode *p = L->next;
+    while (p) {
+        while (p->data / (int)pow(10, b))
+            b++;
+        p = p->next;
+    }
+    return b;
+}
+
+int radix(int number, int n) {
+    number %= (int)pow(10.0, n);
+    number /= (int)pow(10.0, n - 1);
+    return number;
+}
+
+/**
+ * Least Significant Digital
+ */
+void LSD(LinkedList &L, order type) {
+
+    bool finish = true;
+    LNode *p;
+    int n = bitLimit(L);
+    for (int i = 1; i <= n; ++i) {
+        p = L->next;
+        queue<LinkedList> bitQueue[10];
+        while (p) {
+            int pos = radix(p->data, i);
+            bitQueue[pos].push(p);
+            p = p->next;
+        }
+        p = L;
+        for (int j = 0; j <= 9; ++j) {
+            int k = type == asc ? j : 9 - j;
+            while (!bitQueue[k].empty()) {
+                p->next = bitQueue[k].front();
+                bitQueue[k].pop();
+                p = p->next;
+            }
+        }
+        p->next = NULL;
+    }
+
 }

@@ -6,6 +6,7 @@
 #define ALGORITHMEXERCISE_SORT_H
 
 #include <ostream>
+#include "../list/LinkedList.h"
 
 enum order {
     asc, desc
@@ -32,5 +33,16 @@ void BuildHeap(int A[], int n, order type = asc);
 void HeapSort(int A[], int n, order type = asc);
 
 void MergeSort(int A[], int n, order type = asc);
+
+struct LinkQueue {
+    LNode *front, *rear;
+};
+
+int bitLimit(const int numbers[], int n);
+int bitLimit(const LinkedList &L);
+
+int radix(int number, int n);
+
+void LSD(LinkedList &L, order type);
 
 #endif //ALGORITHMEXERCISE_SORT_H

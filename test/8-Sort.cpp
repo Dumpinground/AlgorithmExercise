@@ -81,3 +81,28 @@ TEST(sort, testMergeSort) {
     testSort(MergeSort);
     testSort(MergeSort, C, desc);
 }
+
+TEST(sort, testRadix) {
+    cout << typeid(10.).name() << endl;
+    int a[] = {301, 001, 321, 4321, 604321, 21};
+    int n = 6;
+    cout << bitLimit(a, n) << endl;
+    for (int i : a) {
+        cout << to_string(i) << ": ";
+        for (int j = 1; j <= n; ++j) {
+            cout << " " << radix(i, j);
+        }
+        cout << endl;
+    }
+}
+
+TEST(sort, testRadixSort) {
+
+    LinkedList L;
+    InitList(L);
+    List_TailInsert(L, vector<int> ({ 520, 211, 438, 888, 007, 111, 985, 666, 996, 233, 168 }));
+    LSD(L, asc);
+    cout << L << endl;
+    LSD(L, desc);
+    cout << L << endl;
+}

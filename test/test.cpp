@@ -12,5 +12,6 @@ void cal(F f) {
 }
 
 TEST(test, func) {
-    cout << (true || false && false);
+    cout << (true || false && false) << endl;
+    cout << sizeof(double) << endl;
 }
